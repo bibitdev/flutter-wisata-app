@@ -54,13 +54,16 @@ class _LoginPageState extends State<LoginPage> {
                         const SpaceHeight(86.0),
                         Button.filled(
                           onPressed: () {
-                            context.pushReplacement(const MainPage());
+                            context.pushReplacement(
+                              const MainPage(),
+                            );
                           },
                           label: 'Login',
                         ),
                         const SpaceHeight(128.0),
                         Center(
-                          child: Assets.images.logoCwb.image(height: 40.0),
+                          child: Text('PURWOKERTO ASRI'),
+                          // child: Assets.images.logoCwb.image(height: 40.0),
                         ),
                       ],
                     ),
