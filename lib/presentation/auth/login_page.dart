@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_wisata_app/presentation/home/main_page.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_wisata_app/presentation/auth/bloc/login/login_bloc.dart';
 import '../../core/core.dart';
+import '../home/main_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -11,10 +12,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
     return Scaffold(
       backgroundColor: AppColors.primary,
       body: Stack(
@@ -29,13 +31,11 @@ class _LoginPageState extends State<LoginPage> {
             alignment: Alignment.bottomCenter,
             child: SingleChildScrollView(
               child: ClipRRect(
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(20.0)),
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(20.0)),
                 child: ColoredBox(
                   color: AppColors.white,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 28.0, vertical: 44.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 44.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -52,18 +52,55 @@ class _LoginPageState extends State<LoginPage> {
                           obscureText: true,
                         ),
                         const SpaceHeight(86.0),
-                        Button.filled(
-                          onPressed: () {
-                            context.pushReplacement(
-                              const MainPage(),
+                        BlocListener<LoginBloc, LoginState>(
+                          listener: (context, state) {
+                            state.maybeWhen(
+                              orElse: () {},
+                              success: (data) {
+                                print('Login success state received');
+                                context.pushReplacement(const MainPage());
+                              },
+                              error: (error) {
+                                print('Login error state received: $error');
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(error),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                              },
                             );
                           },
-                          label: 'Login',
+                          child: BlocBuilder<LoginBloc, LoginState>(
+                            builder: (context, state) {
+                              return state.maybeWhen(
+                                orElse: () {
+                                  return Button.filled(
+                                    onPressed: () {
+                                      print('Login button pressed');
+                                      context.read<LoginBloc>().add(
+                                            LoginEvent.login(
+                                              email: emailController.text,
+                                              password: passwordController.text,
+                                            ),
+                                          );
+                                    },
+                                    label: 'Login',
+                                  );
+                                },
+                                loading: () {
+                                  print('Loading state triggered');
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                },
+                              );
+                            },
+                          ),
                         ),
                         const SpaceHeight(128.0),
                         Center(
-                          child: Text('PURWOKERTO ASRI'),
-                          // child: Assets.images.logoCwb.image(height: 40.0),
+                          child: Assets.images.logoCwb.image(height: 40.0),
                         ),
                       ],
                     ),

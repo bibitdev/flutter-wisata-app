@@ -15,7 +15,7 @@ class AuthResponseModel {
 
     factory AuthResponseModel.fromMap(Map<String, dynamic> json) => AuthResponseModel(
         token: json["token"],
-        user: json["user"] == null ? null : User.fromJson(json["user"]),
+        user: json["user"] == null ? null : User.fromMap(json["user"]),
     );
 
     Map<String, dynamic> toMap() => {

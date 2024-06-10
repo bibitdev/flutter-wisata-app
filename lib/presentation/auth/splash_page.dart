@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata_app/core/core.dart';
-import 'package:flutter_wisata_app/presentation/auth/login_page.dart';
+
 import '../../core/assets/assets.gen.dart';
+import 'login_page.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -15,7 +16,7 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     Future.delayed(
       const Duration(seconds: 2),
-      () => context.pushReplacement(const LoginPage(),),
+      () => context.pushReplacement(LoginPage()),
     );
     return Scaffold(
       body: Padding(

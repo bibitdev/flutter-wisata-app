@@ -1,26 +1,27 @@
 import 'dart:convert';
 
-//menggunakan bantuan https://app.quicktype.io/
 class LoginRequestModel {
-    final String email;
-    final String password;
+  final String email;
+  final String password;
 
-    LoginRequestModel({
-        required this.email,
-        required this.password,
-    });
+  LoginRequestModel({
+    required this.email,
+    required this.password,
+  });
 
-    factory LoginRequestModel.fromRawJson(String str) => LoginRequestModel.fromJson(json.decode(str));
+  factory LoginRequestModel.fromJson(String str) =>
+      LoginRequestModel.fromMap(json.decode(str));
 
-    String toRawJson() => json.encode(toJson());
+  String toJson() => json.encode(toMap());
 
-    factory LoginRequestModel.fromJson(Map<String, dynamic> json) => LoginRequestModel(
+  factory LoginRequestModel.fromMap(Map<String, dynamic> json) =>
+      LoginRequestModel(
         email: json["email"],
         password: json["password"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toMap() => {
         "email": email,
         "password": password,
-    };
+      };
 }

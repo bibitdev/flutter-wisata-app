@@ -1,11 +1,12 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter_wisata_app/core/constants/variables.dart';
 import 'package:flutter_wisata_app/data/models/request/login_request_model.dart';
 import 'package:flutter_wisata_app/data/models/response/auth_response_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:dartz/dartz.dart';
 
-class AuthRemoteDatasource{
-  Future<Either<String, AuthResponseModel>> login(LoginRequestModel data) async {
+class AuthRemoteDatasource {
+  Future<Either<String, AuthResponseModel>> login(
+      LoginRequestModel data) async {
     final response = await http.post(
       Uri.parse('${Variables.baseUrl}/api/login'),
       headers: <String, String>{
