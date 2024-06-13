@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_wisata_app/data/datasources/auth_remote_datasource.dart';
+import 'package:flutter_wisata_app/data/datasources/product_remote_datasource.dart';
 import 'package:flutter_wisata_app/presentation/auth/bloc/login/login_bloc.dart';
+import 'package:flutter_wisata_app/presentation/auth/bloc/logout/logout_bloc.dart';
 import 'package:flutter_wisata_app/presentation/auth/splash_page.dart';
+import 'package:flutter_wisata_app/presentation/home/bloc/checkout/checkout_bloc.dart';
+import 'package:flutter_wisata_app/presentation/home/bloc/product/product_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'core/constants/constants.dart';
@@ -16,9 +20,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => LoginBloc(AuthRemoteDatasource()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => LoginBloc(AuthRemoteDatasource()),
+        ),
+        BlocProvider(
+          create: (context) => LogoutBloc(AuthRemoteDatasource()),
+        ),
+        BlocProvider(
+          create: (context) => ProductBloc(ProductRemoteDatasource()),
+        ),
+         BlocProvider(
+          create: (context) => CheckoutBloc(),
+        ),
+      ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),

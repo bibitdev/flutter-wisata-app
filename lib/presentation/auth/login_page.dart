@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_wisata_app/data/datasources/auth_local_datasource.dart';
 import 'package:flutter_wisata_app/presentation/auth/bloc/login/login_bloc.dart';
 import '../../core/core.dart';
 import '../home/main_page.dart';
@@ -31,11 +32,13 @@ class _LoginPageState extends State<LoginPage> {
             alignment: Alignment.bottomCenter,
             child: SingleChildScrollView(
               child: ClipRRect(
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(20.0)),
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(20.0)),
                 child: ColoredBox(
                   color: AppColors.white,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 44.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 28.0, vertical: 44.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -56,8 +59,9 @@ class _LoginPageState extends State<LoginPage> {
                           listener: (context, state) {
                             state.maybeWhen(
                               orElse: () {},
-                              success: (data) {
-                                print('Login success state received');
+                              success: (data) async {
+                                await AuthLocalDatasource().saveAuthData(data);
+                                // print('Login success state received');
                                 context.pushReplacement(const MainPage());
                               },
                               error: (error) {
@@ -91,6 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                                 loading: () {
                                   print('Loading state triggered');
                                   return Center(
+                                    // child: Text('ERROR'),
                                     child: CircularProgressIndicator(),
                                   );
                                 },
