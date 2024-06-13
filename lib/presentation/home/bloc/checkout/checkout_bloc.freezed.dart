@@ -208,10 +208,10 @@ class __$$AddCheckoutImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? product = freezed,
+    Object? product = null,
   }) {
     return _then(_$AddCheckoutImpl(
-      freezed == product
+      null == product
           ? _value.product
           : product // ignore: cast_nullable_to_non_nullable
               as Product,
@@ -237,12 +237,11 @@ class _$AddCheckoutImpl implements _AddCheckout {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AddCheckoutImpl &&
-            const DeepCollectionEquality().equals(other.product, product));
+            (identical(other.product, product) || other.product == product));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(product));
+  int get hashCode => Object.hash(runtimeType, product);
 
   @JsonKey(ignore: true)
   @override
@@ -348,10 +347,10 @@ class __$$RemoveCheckoutImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? product = freezed,
+    Object? product = null,
   }) {
     return _then(_$RemoveCheckoutImpl(
-      freezed == product
+      null == product
           ? _value.product
           : product // ignore: cast_nullable_to_non_nullable
               as Product,
@@ -377,12 +376,11 @@ class _$RemoveCheckoutImpl implements _RemoveCheckout {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$RemoveCheckoutImpl &&
-            const DeepCollectionEquality().equals(other.product, product));
+            (identical(other.product, product) || other.product == product));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(product));
+  int get hashCode => Object.hash(runtimeType, product);
 
   @JsonKey(ignore: true)
   @override

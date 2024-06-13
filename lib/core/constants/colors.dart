@@ -21,4 +21,7 @@ class AppColors {
 
   /// buttonCancel = #F0F0F0
   static const Color buttonCancel = Color(0xffF0F0F0);
+
+  //error
+  static const Color error = Color(0xffFF0000);
 }

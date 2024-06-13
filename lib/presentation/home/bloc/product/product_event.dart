@@ -4,10 +4,10 @@ part of 'product_bloc.dart';
 class ProductEvent with _$ProductEvent {
   const factory ProductEvent.started() = _Started;
   const factory ProductEvent.getProducts() = _GetProducts;
-    //sync
-  // const factory ProductEvent.syncProduct() = _SyncProduct;
+  //sync
+  const factory ProductEvent.syncProduct() = _SyncProduct;
   // //getLocalProducts
-  // const factory ProductEvent.getLocalProducts() = _GetLocalProducts;
+  const factory ProductEvent.getLocalProducts() = _GetLocalProducts;
 
   // //createTicket
   // const factory ProductEvent.createTicket(Product model) = _CreateTicket;

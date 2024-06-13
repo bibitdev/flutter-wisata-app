@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_wisata_app/data/datasources/auth_remote_datasource.dart';
+import 'package:flutter_wisata_app/data/datasources/product_local_datasource.dart';
 import 'package:flutter_wisata_app/data/datasources/product_remote_datasource.dart';
 import 'package:flutter_wisata_app/presentation/auth/bloc/login/login_bloc.dart';
 import 'package:flutter_wisata_app/presentation/auth/bloc/logout/logout_bloc.dart';
@@ -29,9 +30,11 @@ class MyApp extends StatelessWidget {
           create: (context) => LogoutBloc(AuthRemoteDatasource()),
         ),
         BlocProvider(
-          create: (context) => ProductBloc(ProductRemoteDatasource()),
+          create: (context) => ProductBloc(
+              ProductRemoteDatasource(), ProductLocalDatasource.instance)
+            ..add(ProductEvent.syncProduct()),
         ),
-         BlocProvider(
+        BlocProvider(
           create: (context) => CheckoutBloc(),
         ),
       ],

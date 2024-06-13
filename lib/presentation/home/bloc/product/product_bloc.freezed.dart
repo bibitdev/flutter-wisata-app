@@ -20,18 +20,24 @@ mixin _$ProductEvent {
   TResult when<TResult extends Object?>({
     required TResult Function() started,
     required TResult Function() getProducts,
+    required TResult Function() syncProduct,
+    required TResult Function() getLocalProducts,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? started,
     TResult? Function()? getProducts,
+    TResult? Function()? syncProduct,
+    TResult? Function()? getLocalProducts,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? started,
     TResult Function()? getProducts,
+    TResult Function()? syncProduct,
+    TResult Function()? getLocalProducts,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -39,18 +45,24 @@ mixin _$ProductEvent {
   TResult map<TResult extends Object?>({
     required TResult Function(_Started value) started,
     required TResult Function(_GetProducts value) getProducts,
+    required TResult Function(_SyncProduct value) syncProduct,
+    required TResult Function(_GetLocalProducts value) getLocalProducts,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Started value)? started,
     TResult? Function(_GetProducts value)? getProducts,
+    TResult? Function(_SyncProduct value)? syncProduct,
+    TResult? Function(_GetLocalProducts value)? getLocalProducts,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Started value)? started,
     TResult Function(_GetProducts value)? getProducts,
+    TResult Function(_SyncProduct value)? syncProduct,
+    TResult Function(_GetLocalProducts value)? getLocalProducts,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -114,6 +126,8 @@ class _$StartedImpl implements _Started {
   TResult when<TResult extends Object?>({
     required TResult Function() started,
     required TResult Function() getProducts,
+    required TResult Function() syncProduct,
+    required TResult Function() getLocalProducts,
   }) {
     return started();
   }
@@ -123,6 +137,8 @@ class _$StartedImpl implements _Started {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? started,
     TResult? Function()? getProducts,
+    TResult? Function()? syncProduct,
+    TResult? Function()? getLocalProducts,
   }) {
     return started?.call();
   }
@@ -132,6 +148,8 @@ class _$StartedImpl implements _Started {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? started,
     TResult Function()? getProducts,
+    TResult Function()? syncProduct,
+    TResult Function()? getLocalProducts,
     required TResult orElse(),
   }) {
     if (started != null) {
@@ -145,6 +163,8 @@ class _$StartedImpl implements _Started {
   TResult map<TResult extends Object?>({
     required TResult Function(_Started value) started,
     required TResult Function(_GetProducts value) getProducts,
+    required TResult Function(_SyncProduct value) syncProduct,
+    required TResult Function(_GetLocalProducts value) getLocalProducts,
   }) {
     return started(this);
   }
@@ -154,6 +174,8 @@ class _$StartedImpl implements _Started {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Started value)? started,
     TResult? Function(_GetProducts value)? getProducts,
+    TResult? Function(_SyncProduct value)? syncProduct,
+    TResult? Function(_GetLocalProducts value)? getLocalProducts,
   }) {
     return started?.call(this);
   }
@@ -163,6 +185,8 @@ class _$StartedImpl implements _Started {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Started value)? started,
     TResult Function(_GetProducts value)? getProducts,
+    TResult Function(_SyncProduct value)? syncProduct,
+    TResult Function(_GetLocalProducts value)? getLocalProducts,
     required TResult orElse(),
   }) {
     if (started != null) {
@@ -216,6 +240,8 @@ class _$GetProductsImpl implements _GetProducts {
   TResult when<TResult extends Object?>({
     required TResult Function() started,
     required TResult Function() getProducts,
+    required TResult Function() syncProduct,
+    required TResult Function() getLocalProducts,
   }) {
     return getProducts();
   }
@@ -225,6 +251,8 @@ class _$GetProductsImpl implements _GetProducts {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? started,
     TResult? Function()? getProducts,
+    TResult? Function()? syncProduct,
+    TResult? Function()? getLocalProducts,
   }) {
     return getProducts?.call();
   }
@@ -234,6 +262,8 @@ class _$GetProductsImpl implements _GetProducts {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? started,
     TResult Function()? getProducts,
+    TResult Function()? syncProduct,
+    TResult Function()? getLocalProducts,
     required TResult orElse(),
   }) {
     if (getProducts != null) {
@@ -247,6 +277,8 @@ class _$GetProductsImpl implements _GetProducts {
   TResult map<TResult extends Object?>({
     required TResult Function(_Started value) started,
     required TResult Function(_GetProducts value) getProducts,
+    required TResult Function(_SyncProduct value) syncProduct,
+    required TResult Function(_GetLocalProducts value) getLocalProducts,
   }) {
     return getProducts(this);
   }
@@ -256,6 +288,8 @@ class _$GetProductsImpl implements _GetProducts {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Started value)? started,
     TResult? Function(_GetProducts value)? getProducts,
+    TResult? Function(_SyncProduct value)? syncProduct,
+    TResult? Function(_GetLocalProducts value)? getLocalProducts,
   }) {
     return getProducts?.call(this);
   }
@@ -265,6 +299,8 @@ class _$GetProductsImpl implements _GetProducts {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Started value)? started,
     TResult Function(_GetProducts value)? getProducts,
+    TResult Function(_SyncProduct value)? syncProduct,
+    TResult Function(_GetLocalProducts value)? getLocalProducts,
     required TResult orElse(),
   }) {
     if (getProducts != null) {
@@ -276,6 +312,234 @@ class _$GetProductsImpl implements _GetProducts {
 
 abstract class _GetProducts implements ProductEvent {
   const factory _GetProducts() = _$GetProductsImpl;
+}
+
+/// @nodoc
+abstract class _$$SyncProductImplCopyWith<$Res> {
+  factory _$$SyncProductImplCopyWith(
+          _$SyncProductImpl value, $Res Function(_$SyncProductImpl) then) =
+      __$$SyncProductImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$SyncProductImplCopyWithImpl<$Res>
+    extends _$ProductEventCopyWithImpl<$Res, _$SyncProductImpl>
+    implements _$$SyncProductImplCopyWith<$Res> {
+  __$$SyncProductImplCopyWithImpl(
+      _$SyncProductImpl _value, $Res Function(_$SyncProductImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$SyncProductImpl implements _SyncProduct {
+  const _$SyncProductImpl();
+
+  @override
+  String toString() {
+    return 'ProductEvent.syncProduct()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$SyncProductImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() started,
+    required TResult Function() getProducts,
+    required TResult Function() syncProduct,
+    required TResult Function() getLocalProducts,
+  }) {
+    return syncProduct();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? started,
+    TResult? Function()? getProducts,
+    TResult? Function()? syncProduct,
+    TResult? Function()? getLocalProducts,
+  }) {
+    return syncProduct?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? started,
+    TResult Function()? getProducts,
+    TResult Function()? syncProduct,
+    TResult Function()? getLocalProducts,
+    required TResult orElse(),
+  }) {
+    if (syncProduct != null) {
+      return syncProduct();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Started value) started,
+    required TResult Function(_GetProducts value) getProducts,
+    required TResult Function(_SyncProduct value) syncProduct,
+    required TResult Function(_GetLocalProducts value) getLocalProducts,
+  }) {
+    return syncProduct(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Started value)? started,
+    TResult? Function(_GetProducts value)? getProducts,
+    TResult? Function(_SyncProduct value)? syncProduct,
+    TResult? Function(_GetLocalProducts value)? getLocalProducts,
+  }) {
+    return syncProduct?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Started value)? started,
+    TResult Function(_GetProducts value)? getProducts,
+    TResult Function(_SyncProduct value)? syncProduct,
+    TResult Function(_GetLocalProducts value)? getLocalProducts,
+    required TResult orElse(),
+  }) {
+    if (syncProduct != null) {
+      return syncProduct(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _SyncProduct implements ProductEvent {
+  const factory _SyncProduct() = _$SyncProductImpl;
+}
+
+/// @nodoc
+abstract class _$$GetLocalProductsImplCopyWith<$Res> {
+  factory _$$GetLocalProductsImplCopyWith(_$GetLocalProductsImpl value,
+          $Res Function(_$GetLocalProductsImpl) then) =
+      __$$GetLocalProductsImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$GetLocalProductsImplCopyWithImpl<$Res>
+    extends _$ProductEventCopyWithImpl<$Res, _$GetLocalProductsImpl>
+    implements _$$GetLocalProductsImplCopyWith<$Res> {
+  __$$GetLocalProductsImplCopyWithImpl(_$GetLocalProductsImpl _value,
+      $Res Function(_$GetLocalProductsImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$GetLocalProductsImpl implements _GetLocalProducts {
+  const _$GetLocalProductsImpl();
+
+  @override
+  String toString() {
+    return 'ProductEvent.getLocalProducts()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$GetLocalProductsImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() started,
+    required TResult Function() getProducts,
+    required TResult Function() syncProduct,
+    required TResult Function() getLocalProducts,
+  }) {
+    return getLocalProducts();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? started,
+    TResult? Function()? getProducts,
+    TResult? Function()? syncProduct,
+    TResult? Function()? getLocalProducts,
+  }) {
+    return getLocalProducts?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? started,
+    TResult Function()? getProducts,
+    TResult Function()? syncProduct,
+    TResult Function()? getLocalProducts,
+    required TResult orElse(),
+  }) {
+    if (getLocalProducts != null) {
+      return getLocalProducts();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Started value) started,
+    required TResult Function(_GetProducts value) getProducts,
+    required TResult Function(_SyncProduct value) syncProduct,
+    required TResult Function(_GetLocalProducts value) getLocalProducts,
+  }) {
+    return getLocalProducts(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Started value)? started,
+    TResult? Function(_GetProducts value)? getProducts,
+    TResult? Function(_SyncProduct value)? syncProduct,
+    TResult? Function(_GetLocalProducts value)? getLocalProducts,
+  }) {
+    return getLocalProducts?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Started value)? started,
+    TResult Function(_GetProducts value)? getProducts,
+    TResult Function(_SyncProduct value)? syncProduct,
+    TResult Function(_GetLocalProducts value)? getLocalProducts,
+    required TResult orElse(),
+  }) {
+    if (getLocalProducts != null) {
+      return getLocalProducts(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _GetLocalProducts implements ProductEvent {
+  const factory _GetLocalProducts() = _$GetLocalProductsImpl;
 }
 
 /// @nodoc
