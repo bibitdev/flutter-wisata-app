@@ -1,4 +1,5 @@
 import 'package:flutter_wisata_app/data/models/response/product_response_model.dart';
+import 'package:flutter_wisata_app/presentation/home/bloc/checkout/models/order_model.dart';
 import 'package:sqflite/sqflite.dart';
 
 class ProductLocalDatasource {
@@ -96,7 +97,7 @@ class ProductLocalDatasource {
       );
     }
   }
-  
+
   //Remove all data product
   Future<void> removeAllProduct() async {
     final db = await instance.database;
@@ -128,4 +129,29 @@ class ProductLocalDatasource {
     });
   }
 
+   Future<int> insertOrder(OrderModel order) async {
+    final db = await instance.database;
+    int id = await db.insert(
+      tableOrders,
+      order.toMapForLocal(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+
+    for (var orderItem in order.orders) {
+      await db.insert(
+        tableOrderItems,
+        orderItem.toMapForLocal(id),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+    }
+
+    return id;
+  }
+
+    Future<List<OrderModel>> getAllOrder() async {
+    final db = await instance.database;
+    final result = await db.query('orders', orderBy: 'id DESC');
+
+    return result.map((e) => OrderModel.fromLocalMap(e)).toList();
+  }
 }

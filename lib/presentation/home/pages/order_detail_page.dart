@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_wisata_app/presentation/home/bloc/checkout/checkout_bloc.dart';
 import 'package:flutter_wisata_app/presentation/home/bloc/checkout/models/order_item.dart';
+import 'package:flutter_wisata_app/presentation/home/dialogs/payment_tunai_dialog.dart';
 import 'package:flutter_wisata_app/presentation/home/widgets/order_detail_card.dart';
 import 'package:flutter_wisata_app/presentation/home/widgets/payment_method_button.dart';
 
@@ -151,12 +152,12 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                           //   builder: (context) => const PaymentQrisDialog(),
                           // );
                         } else if (paymentButtonIndex == 1) {
-                          // showDialog(
-                          //   context: context,
-                          //   builder: (context) => const PaymentTunaiDialog(
-                          //     totalPrice: 140000,
-                          //   ),
-                          // );
+                          showDialog(
+                            context: context,
+                            builder: (context) =>  PaymentTunaiDialog(
+                              totalPrice: totalPrice,
+                            ),
+                          );
                         }
                       },
                       label: 'Process',
