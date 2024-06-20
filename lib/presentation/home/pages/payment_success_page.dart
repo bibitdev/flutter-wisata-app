@@ -1,10 +1,20 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_wisata_app/presentation/home/bloc/checkout/checkout_bloc.dart';
+import 'package:flutter_wisata_app/presentation/home/main_page.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+
+import 'package:flutter_wisata_app/presentation/home/bloc/checkout/models/order_model.dart';
 
 import '../../../core/core.dart';
 
 class PaymentSuccessPage extends StatelessWidget {
-  const PaymentSuccessPage({super.key});
+  final OrderModel order;
+  const PaymentSuccessPage({
+    Key? key,
+    required this.order,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +112,14 @@ class PaymentSuccessPage extends StatelessWidget {
       floatingActionButton: Padding(
         padding: const EdgeInsets.fromLTRB(36, 0, 36, 20),
         child: Button.filled(
-          onPressed: () {},
+          onPressed: () {
+            //clear check out
+            context.read<CheckoutBloc>().add(const CheckoutEvent.started());
+
+            context.pushReplacement(
+              const MainPage(),
+            );
+          },
           label: 'Cetak Transaksi',
           borderRadius: 10.0,
         ),

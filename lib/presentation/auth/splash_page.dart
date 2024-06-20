@@ -52,7 +52,8 @@ class _SplashPageState extends State<SplashPage> {
                       height: 100.0,
                       child: Align(
                         alignment: Alignment.center,
-                        child: Assets.images.logoCwb.image(width: 96.0),
+                        child: Text('WISATA PURWOKERTO'),
+                        // child: Assets.images.logoCwb.image(width: 96.0),
                       ),
                     ),
                   ],

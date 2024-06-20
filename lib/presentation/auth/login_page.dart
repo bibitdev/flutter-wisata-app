@@ -105,7 +105,8 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         const SpaceHeight(128.0),
                         Center(
-                          child: Assets.images.logoCwb.image(height: 40.0),
+                          child: Text('WISATA PURWOKERTO'),
+                          // child: Assets.images.logoCwb.image(height: 40.0),
                         ),
                       ],
                     ),

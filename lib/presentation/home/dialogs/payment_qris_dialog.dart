@@ -17,7 +17,7 @@ class PaymentQrisDialog extends StatelessWidget {
           const Text('Show this QR code to customer'),
           const SpaceHeight(24.0),
           InkWell(
-            onTap: () => context.pushReplacement(const PaymentSuccessPage()),
+            onTap: () {},
             child: SizedBox(
               height: 200.0,
               width: 200.0,

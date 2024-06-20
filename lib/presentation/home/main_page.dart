@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_wisata_app/presentation/home/bloc/product/product_bloc.dart';
 import 'package:flutter_wisata_app/presentation/home/logout_page.dart';
+import 'package:flutter_wisata_app/presentation/home/pages/history_page.dart';
 import 'package:flutter_wisata_app/presentation/home/pages/order_page.dart';
 import 'widgets/nav_item.dart';
 
@@ -20,7 +21,8 @@ class _MainPageState extends State<MainPage> {
     OrderPage(),
     // Center(child: const Text('Home')),
     Center(child: const Text('Ticket')),
-    Center(child: const Text('History')),
+    HistoryPage(),
+    // Center(child: const Text('History')),
     // Center(child: const Text('Setting')),
     LogoutPage(),
   ];

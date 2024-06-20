@@ -129,7 +129,7 @@ class ProductLocalDatasource {
     });
   }
 
-   Future<int> insertOrder(OrderModel order) async {
+  Future<int> insertOrder(OrderModel order) async {
     final db = await instance.database;
     int id = await db.insert(
       tableOrders,
@@ -148,7 +148,7 @@ class ProductLocalDatasource {
     return id;
   }
 
-    Future<List<OrderModel>> getAllOrder() async {
+  Future<List<OrderModel>> getAllOrder() async {
     final db = await instance.database;
     final result = await db.query('orders', orderBy: 'id DESC');
 

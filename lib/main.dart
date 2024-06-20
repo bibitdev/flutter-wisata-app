@@ -7,6 +7,8 @@ import 'package:flutter_wisata_app/presentation/auth/bloc/login/login_bloc.dart'
 import 'package:flutter_wisata_app/presentation/auth/bloc/logout/logout_bloc.dart';
 import 'package:flutter_wisata_app/presentation/auth/splash_page.dart';
 import 'package:flutter_wisata_app/presentation/home/bloc/checkout/checkout_bloc.dart';
+import 'package:flutter_wisata_app/presentation/home/bloc/history/history_bloc.dart';
+import 'package:flutter_wisata_app/presentation/home/bloc/order/order_bloc.dart';
 import 'package:flutter_wisata_app/presentation/home/bloc/product/product_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -36,6 +38,12 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => CheckoutBloc(),
+        ),
+        BlocProvider(
+          create: (context) => OrderBloc(),
+        ),
+        BlocProvider(
+          create: (context) => HistoryBloc(ProductLocalDatasource.instance),
         ),
       ],
       child: MaterialApp(

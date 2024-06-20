@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_wisata_app/data/datasources/product_local_datasource.dart';
+import 'package:flutter_wisata_app/presentation/home/bloc/checkout/models/order_model.dart';
+import 'package:flutter_wisata_app/presentation/home/bloc/order/order_bloc.dart';
 
 import '../../../core/core.dart';
 import '../pages/payment_success_page.dart';
@@ -101,15 +105,63 @@ class _PaymentTunaiDialogState extends State<PaymentTunaiDialog> {
           //   ],
           // ),
           const SpaceHeight(24.0),
-          Button.filled(
-            disabled: paidIndex == -1,
-            onPressed: () {
-              //bloc order
-              context.pushReplacement(const PaymentSuccessPage());
+          BlocListener<OrderBloc, OrderState>(
+            listener: (context, state) {
+              state.maybeWhen(
+                error: (message) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(message),
+                      backgroundColor: AppColors.error,
+                    ),
+                  );
+                },
+                orElse: () {},
+                success: (
+                  orders,
+                  totalQuantity,
+                  totalPrice,
+                  paymentNominal,
+                  paymentMethod,
+                  cashierId,
+                  cashierName,
+                ) {
+                  final orderModel = OrderModel(
+                    paymentMethod: paymentMethod,
+                    nominalPayment: paymentNominal,
+                    orders: orders,
+                    totalQuantity: totalQuantity,
+                    totalPrice: totalPrice,
+                    cashierId: cashierId,
+                    cashierName: cashierName,
+                    isSync: false,
+                    transactionTime: DateTime.now().toIso8601String(),
+                  );
+                  ProductLocalDatasource.instance.insertOrder(orderModel);
+                  context.pushReplacement(
+                    PaymentSuccessPage(
+                      order: orderModel,
+                    ),
+                  );
+                },
+              );
             },
-            label: 'Bayar',
-            fontSize: 16.0,
-            borderRadius: 10.0,
+            child: Button.filled(
+              disabled: paidIndex == -1,
+              onPressed: () {
+                //bloc order
+                int nominal = int.parse(nominalController.text
+                    .replaceAll('Rp.', '')
+                    .replaceAll('.', ''));
+                context
+                    .read<OrderBloc>()
+                    .add(OrderEvent.addNominalPayment(nominal));
+                // context.pushReplacement(const PaymentSuccessPage());
+              },
+              label: 'Bayar',
+              fontSize: 16.0,
+              borderRadius: 10.0,
+            ),
           ),
         ],
       ),
