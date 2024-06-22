@@ -4,6 +4,7 @@ import 'package:flutter_wisata_app/presentation/home/bloc/product/product_bloc.d
 import 'package:flutter_wisata_app/presentation/home/logout_page.dart';
 import 'package:flutter_wisata_app/presentation/home/pages/history_page.dart';
 import 'package:flutter_wisata_app/presentation/home/pages/order_page.dart';
+import 'package:flutter_wisata_app/presentation/home/settings/pages/setting_page.dart';
 import 'widgets/nav_item.dart';
 
 import '../../core/core.dart';
@@ -22,9 +23,10 @@ class _MainPageState extends State<MainPage> {
     // Center(child: const Text('Home')),
     Center(child: const Text('Ticket')),
     HistoryPage(),
+    SettingPage(),
     // Center(child: const Text('History')),
     // Center(child: const Text('Setting')),
-    LogoutPage(),
+    // LogoutPage(),
   ];
 
   void _onItemTapped(int index) {

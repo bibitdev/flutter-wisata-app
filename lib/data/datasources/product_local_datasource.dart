@@ -150,6 +150,7 @@ class ProductLocalDatasource {
 
   Future<List<OrderModel>> getAllOrder() async {
     final db = await instance.database;
+    print("loading getall order");
     final result = await db.query('orders', orderBy: 'id DESC');
 
     return result.map((e) => OrderModel.fromLocalMap(e)).toList();

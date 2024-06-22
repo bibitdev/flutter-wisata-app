@@ -76,34 +76,40 @@ class _PaymentTunaiDialogState extends State<PaymentTunaiDialog> {
               ),
             ],
           ),
-          // const SpaceHeight(20.0),
-          // Row(
-          //   children: [
-          //     Flexible(
-          //       child: Button.outlined(
-          //         label: 150000.currencyFormatRp,
-          //         borderRadius: 10.0,
-          //         fontSize: 14.0,
-          //         onPressed: () => setState(() => paidIndex = 2),
-          //         textColor: paidIndex == 2 ? AppColors.white : AppColors.grey,
-          //         color:
-          //             paidIndex == 2 ? AppColors.primary : Colors.transparent,
-          //       ),
-          //     ),
-          //     const SpaceWidth(20.0),
-          //     Flexible(
-          //       child: Button.outlined(
-          //         label: 300000.currencyFormatRp,
-          //         borderRadius: 10.0,
-          //         fontSize: 14.0,
-          //         onPressed: () => setState(() => paidIndex = 3),
-          //         textColor: paidIndex == 3 ? AppColors.white : AppColors.grey,
-          //         color:
-          //             paidIndex == 3 ? AppColors.primary : Colors.transparent,
-          //       ),
-          //     ),
-          //   ],
-          // ),
+          const SpaceHeight(20.0),
+          Row(
+            children: [
+              Flexible(
+                child: Button.outlined(
+                  label: 150000.currencyFormatRp,
+                  borderRadius: 10.0,
+                  fontSize: 12.0,
+                  onPressed: () => setState(() {
+                    paidIndex = 2;
+                    nominalController.text = 150000.currencyFormatRp;
+                  }),
+                  textColor: paidIndex == 2 ? AppColors.white : AppColors.grey,
+                  color:
+                      paidIndex == 2 ? AppColors.primary : Colors.transparent,
+                ),
+              ),
+              const SpaceWidth(20.0),
+              Flexible(
+                child: Button.outlined(
+                  label: 300000.currencyFormatRp,
+                  borderRadius: 10.0,
+                  fontSize: 12.0,
+                  onPressed: () => setState(() {
+                    paidIndex = 3;
+                    nominalController.text = 300000.currencyFormatRp;
+                  }),
+                  textColor: paidIndex == 3 ? AppColors.white : AppColors.grey,
+                  color:
+                      paidIndex == 3 ? AppColors.primary : Colors.transparent,
+                ),
+              ),
+            ],
+          ),
           const SpaceHeight(24.0),
           BlocListener<OrderBloc, OrderState>(
             listener: (context, state) {
@@ -117,32 +123,20 @@ class _PaymentTunaiDialogState extends State<PaymentTunaiDialog> {
                   );
                 },
                 orElse: () {},
-                success: (
-                  orders,
-                  totalQuantity,
-                  totalPrice,
-                  paymentNominal,
-                  paymentMethod,
-                  cashierId,
-                  cashierName,
-                ) {
+                success: (orders, totalQuantity, totalPrice, paymentNominal,
+                    paymentMethod, cashierId, cashierName) {
                   final orderModel = OrderModel(
-                    paymentMethod: paymentMethod,
-                    nominalPayment: paymentNominal,
-                    orders: orders,
-                    totalQuantity: totalQuantity,
-                    totalPrice: totalPrice,
-                    cashierId: cashierId,
-                    cashierName: cashierName,
-                    isSync: false,
-                    transactionTime: DateTime.now().toIso8601String(),
-                  );
+                      paymentMethod: paymentMethod,
+                      nominalPayment: paymentNominal,
+                      orders: orders,
+                      totalQuantity: totalQuantity,
+                      totalPrice: totalPrice,
+                      cashierId: cashierId,
+                      cashierName: cashierName,
+                      isSync: false,
+                      transactionTime: DateTime.now().toIso8601String());
                   ProductLocalDatasource.instance.insertOrder(orderModel);
-                  context.pushReplacement(
-                    PaymentSuccessPage(
-                      order: orderModel,
-                    ),
-                  );
+                  context.pushReplacement( PaymentSuccessPage(order: orderModel,));
                 },
               );
             },
