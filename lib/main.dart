@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_wisata_app/data/datasources/auth_remote_datasource.dart';
+import 'package:flutter_wisata_app/data/datasources/category_remote_datasource.dart';
 import 'package:flutter_wisata_app/data/datasources/product_local_datasource.dart';
 import 'package:flutter_wisata_app/data/datasources/product_remote_datasource.dart';
 import 'package:flutter_wisata_app/presentation/auth/bloc/login/login_bloc.dart';
 import 'package:flutter_wisata_app/presentation/auth/bloc/logout/logout_bloc.dart';
 import 'package:flutter_wisata_app/presentation/auth/splash_page.dart';
+import 'package:flutter_wisata_app/presentation/home/bloc/category/category_bloc.dart';
 import 'package:flutter_wisata_app/presentation/home/bloc/checkout/checkout_bloc.dart';
 import 'package:flutter_wisata_app/presentation/home/bloc/history/history_bloc.dart';
 import 'package:flutter_wisata_app/presentation/home/bloc/order/order_bloc.dart';
@@ -44,6 +46,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => HistoryBloc(ProductLocalDatasource.instance),
+        ),
+        BlocProvider(
+          create: (context) => CategoryBloc(CategoryRemoteDatasource()),
         ),
       ],
       child: MaterialApp(

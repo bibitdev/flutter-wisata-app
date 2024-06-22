@@ -9,12 +9,12 @@ class ProductEvent with _$ProductEvent {
   // //getLocalProducts
   const factory ProductEvent.getLocalProducts() = _GetLocalProducts;
 
-  // //createTicket
-  // const factory ProductEvent.createTicket(Product model) = _CreateTicket;
+  //createTicket
+  const factory ProductEvent.createTicket(Product model) = _CreateTicket;
 
-  // //updateTicket
-  // const factory ProductEvent.updateTicket(Product model) = _UpdateTicket;
+  //updateTicket
+  const factory ProductEvent.updateTicket(Product model) = _UpdateTicket;
 
-  // //deleteTicket
-  // const factory ProductEvent.deleteTicket(int id) = _DeleteTicket;
+  //deleteTicket
+  const factory ProductEvent.deleteTicket(int id) = _DeleteTicket;
 }

@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:flutter_wisata_app/data/models/response/category_response_model.dart';
+
 class ProductResponseModel {
   final String? status;
   final List<Product>? data;
@@ -74,10 +76,10 @@ class Product {
         price: json["price"],
         stock: json["stock"],
         categoryId: json["category_id"],
-        image: json["image"],
-        status: json["status"],
+        // image: json["image"],
+        // status: json["status"],
         criteria: json["criteria"],
-        favorite: json["favorite"],
+        // favorite: json["favorite"],
         deletedAt: json["deleted_at"],
         createdAt: json["created_at"] == null
             ? null
@@ -182,42 +184,42 @@ class Product {
   }
 }
 
-class Category {
-  final int? id;
-  final String? name;
-  final String? description;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
+// class Category {
+//   final int? id;
+//   final String? name;
+//   final String? description;
+//   final DateTime? createdAt;
+//   final DateTime? updatedAt;
 
-  Category({
-    this.id,
-    this.name,
-    this.description,
-    this.createdAt,
-    this.updatedAt,
-  });
+//   Category({
+//     this.id,
+//     this.name,
+//     this.description,
+//     this.createdAt,
+//     this.updatedAt,
+//   });
 
-  factory Category.fromJson(String str) => Category.fromMap(json.decode(str));
+//   factory Category.fromJson(String str) => Category.fromMap(json.decode(str));
 
-  String toJson() => json.encode(toMap());
+//   String toJson() => json.encode(toMap());
 
-  factory Category.fromMap(Map<String, dynamic> json) => Category(
-        id: json["id"],
-        name: json["name"],
-        description: json["description"],
-        createdAt: json["created_at"] == null
-            ? null
-            : DateTime.parse(json["created_at"]),
-        updatedAt: json["updated_at"] == null
-            ? null
-            : DateTime.parse(json["updated_at"]),
-      );
+//   factory Category.fromMap(Map<String, dynamic> json) => Category(
+//         id: json["id"],
+//         name: json["name"],
+//         description: json["description"],
+//         createdAt: json["created_at"] == null
+//             ? null
+//             : DateTime.parse(json["created_at"]),
+//         updatedAt: json["updated_at"] == null
+//             ? null
+//             : DateTime.parse(json["updated_at"]),
+//       );
 
-  Map<String, dynamic> toMap() => {
-        "id": id,
-        "name": name,
-        "description": description,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-      };
-}
+//   Map<String, dynamic> toMap() => {
+//         "id": id,
+//         "name": name,
+//         "description": description,
+//         "created_at": createdAt?.toIso8601String(),
+//         "updated_at": updatedAt?.toIso8601String(),
+//       };
+// }

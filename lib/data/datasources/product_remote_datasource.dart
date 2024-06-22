@@ -1,5 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_wisata_app/data/datasources/auth_local_datasource.dart';
+import 'package:flutter_wisata_app/data/models/request/create_ticket_request_model.dart';
+import 'package:flutter_wisata_app/data/models/response/create_ticket_response_model.dart';
 // import 'package:flutter_wisata_app/data/models/request/create_ticket_request_model.dart';
 // import 'package:flutter_wisata_app/data/models/response/create_ticket_response_model.dart';
 import 'package:flutter_wisata_app/data/models/response/product_response_model.dart';
@@ -26,65 +28,69 @@ class ProductRemoteDatasource {
     }
   }
 
-//   Future<Either<String, CreateTicketResponseModel>> createTicket(
-//       CreateTicketRequestModel model) async {
-//     final authData = await AuthLocalDatasource().getAuthData();
-//     final response = await http.post(
-//       Uri.parse('${Variables.baseUrl}/api/api-products'),
-//       headers: <String, String>{
-//         'Content-Type': 'application/json; charset=UTF-8',
-//         'Accept': 'application/json',
-//         'Authorization': 'Bearer ${authData.token}',
-//       },
-//       body: model.toJson(),
-//     );
+  // CREATE TICKET
+  Future<Either<String, CreateTicketResponseModel>> createTicket(
+      CreateTicketRequestModel model) async {
+    final authData = await AuthLocalDatasource().getAuthData();
+    final response = await http.post(
+      Uri.parse('${Variables.baseUrl}/api/api-products'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${authData.token}',
+      },
+      body: model.toJson(),
+    );
 
-//     if (response.statusCode == 200) {
-//       return Right(CreateTicketResponseModel.fromJson(response.body));
-//     } else {
-//       return Left(response.body);
-//     }
-//   }
+    if (response.statusCode == 200) {
+      return Right(CreateTicketResponseModel.fromJson(response.body));
+    } else {
+      return Left(response.body);
+    }
+  }
 
-//   Future<Either<String, CreateTicketResponseModel>> updateTicket(
-//       CreateTicketRequestModel requestModel, int id) async {
-//     final authData = await AuthLocalDatasource().getAuthData();
-//     final Map<String, String> headers = {
-//       'Authorization': 'Bearer ${authData.token}',
-//       'Accept': 'application/json',
-//       'Content-Type': 'application/json'
-//     };
 
-//     final response = await http.patch(
-//       Uri.parse('${Variables.baseUrl}/api/api-products/$id'),
-//       headers: headers,
-//       body: requestModel.toJson(),
-//     );
+// UPDATE TICKET
+  Future<Either<String, CreateTicketResponseModel>> updateTicket(
+      CreateTicketRequestModel requestModel, int id) async {
+    final authData = await AuthLocalDatasource().getAuthData();
+    final Map<String, String> headers = {
+      'Authorization': 'Bearer ${authData.token}',
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    };
 
-//     if (response.statusCode == 200) {
-//       return Right(CreateTicketResponseModel.fromJson(response.body));
-//     } else {
-//       return Left(response.body);
-//     }
-//   }
+    final response = await http.patch(
+      Uri.parse('${Variables.baseUrl}/api/api-products/$id'),
+      headers: headers,
+      body: requestModel.toJson(),
+    );
 
-//   Future<Either<String, String>> deleteTicket(int id) async {
-//     final authData = await AuthLocalDatasource().getAuthData();
-//     final Map<String, String> headers = {
-//       'Authorization': 'Bearer ${authData.token}',
-//       'Accept': 'application/json',
-//       'Content-Type': 'application/json'
-//     };
+    if (response.statusCode == 200) {
+      return Right(CreateTicketResponseModel.fromJson(response.body));
+    } else {
+      return Left(response.body);
+    }
+  }
 
-//     final response = await http.delete(
-//       Uri.parse('${Variables.baseUrl}/api/api-products/$id'),
-//       headers: headers,
-//     );
+// DELETE TICKET
+  Future<Either<String, String>> deleteTicket(int id) async {
+    final authData = await AuthLocalDatasource().getAuthData();
+    final Map<String, String> headers = {
+      'Authorization': 'Bearer ${authData.token}',
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    };
 
-//     if (response.statusCode == 200) {
-//       return Right('Success');
-//     } else {
-//       return Left(response.body);
-//     }
-//   }
+    final response = await http.delete(
+      Uri.parse('${Variables.baseUrl}/api/api-products/$id'),
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      return Right('Success');
+    } else {
+      return Left(response.body);
+    }
+  }
 }

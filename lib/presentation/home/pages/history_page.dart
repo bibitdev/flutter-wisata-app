@@ -32,12 +32,17 @@ class _HistoryPageState extends State<HistoryPage> {
                   child: Text('No Data'),
                 );
               }
-              return ListView(
+              return ListView.builder(
                 padding: const EdgeInsets.all(16.0),
-                children: List.generate(
-                  histories.length,
-                  (index) => HistoryCard(item: histories[index]),
-                ),
+                itemCount: histories.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 4.0,
+                    ),
+                    child: HistoryCard(item: histories[index]),
+                  );
+                },
               );
             },
             loading: () {

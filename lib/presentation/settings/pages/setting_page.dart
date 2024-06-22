@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_wisata_app/core/assets/assets.dart';
-import 'package:flutter_wisata_app/data/models/response/product_response_model.dart';
-import 'package:flutter_wisata_app/presentation/home/settings/widets/setting_button.dart';
+import 'package:flutter_wisata_app/presentation/settings/widgets/setting_button.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});

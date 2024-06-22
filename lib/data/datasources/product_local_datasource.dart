@@ -1,6 +1,8 @@
-import 'package:flutter_wisata_app/data/models/response/product_response_model.dart';
 import 'package:flutter_wisata_app/presentation/home/bloc/checkout/models/order_model.dart';
 import 'package:sqflite/sqflite.dart';
+
+import '../models/response/category_response_model.dart';
+import '../models/response/product_response_model.dart';
 
 class ProductLocalDatasource {
   ProductLocalDatasource._init();
@@ -150,7 +152,6 @@ class ProductLocalDatasource {
 
   Future<List<OrderModel>> getAllOrder() async {
     final db = await instance.database;
-    print("loading getall order");
     final result = await db.query('orders', orderBy: 'id DESC');
 
     return result.map((e) => OrderModel.fromLocalMap(e)).toList();
