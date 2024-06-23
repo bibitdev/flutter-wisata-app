@@ -156,4 +156,19 @@ class ProductLocalDatasource {
 
     return result.map((e) => OrderModel.fromLocalMap(e)).toList();
   }
+
+  // Insert Category
+  Future<void> insertAllCategory(List<Category> categories) async {
+    final db = await instance.database;
+    for (var category in categories) {
+      await db.insert(tableCategory, category.toMap(),
+          conflictAlgorithm: ConflictAlgorithm.replace);
+    }
+  }
+
+  // Remove all data category
+  Future<void> removeAllCategory() async {
+    final db = await instance.database;
+    await db.delete(tableCategory);
+  } 
 }
