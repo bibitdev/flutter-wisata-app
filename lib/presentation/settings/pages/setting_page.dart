@@ -5,6 +5,7 @@ import 'package:flutter_wisata_app/core/constants/constants.dart';
 import 'package:flutter_wisata_app/data/datasources/product_local_datasource.dart';
 import 'package:flutter_wisata_app/presentation/home/bloc/category/category_bloc.dart';
 import 'package:flutter_wisata_app/presentation/home/bloc/product/product_bloc.dart';
+import 'package:flutter_wisata_app/presentation/home/bloc/sync_order/sync_order_bloc.dart';
 import 'package:flutter_wisata_app/presentation/settings/widgets/setting_button.dart';
 
 class SettingPage extends StatefulWidget {
@@ -116,6 +117,52 @@ class _SettingPageState extends State<SettingPage> {
                       context
                           .read<ProductBloc>()
                           .add(const ProductEvent.getProducts());
+                    },
+                  );
+                },
+              );
+            },
+          ),
+          
+          // Sync Orders
+          BlocConsumer<SyncOrderBloc, SyncOrderState>(
+            listener: (context, state) {
+              state.maybeWhen(
+                error: (message) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(message),
+                      backgroundColor: AppColors.error,
+                    ),
+                  );
+                },
+                success: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const Text('Sync Order Success'),
+                      backgroundColor: AppColors.primary,
+                    ),
+                  );
+                },
+                orElse: () {},
+              );
+            },
+            builder: (context, state) {
+              return state.maybeWhen(
+                loading: () {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+                orElse: () {
+                  return SettingButton(
+                    iconPath: Assets.icons.settings.syncData.path,
+                    title: 'Sync Orders',
+                    subtitle: 'sinkronasi online',
+                    onPressed: () {
+                      context
+                          .read<SyncOrderBloc>()
+                          .add(const SyncOrderEvent.syncOrder());
                     },
                   );
                 },

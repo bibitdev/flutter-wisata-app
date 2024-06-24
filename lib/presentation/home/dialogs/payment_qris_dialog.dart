@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata_app/presentation/home/pages/history_page.dart';
-import 'package:qr_flutter/qr_flutter.dart';
+// import 'package:qr_flutter/qr_flutter.dart';
 import 'package:timer_count_down/timer_count_down.dart';
 
 import '../../../core/core.dart';
@@ -28,12 +28,16 @@ class PaymentQrisDialog extends StatelessWidget {
             child: SizedBox(
               height: 200.0,
               width: 200.0,
-              child: QrImageView(
-                data: 'Bayar-qris',
-                version: QrVersions.auto,
-                size: 100.0,
+              child: Container(
+                child: Image.asset('assets/images/qr_dana.png'),
               ),
             ),
+            //   child: QrImageView(
+            //     data: 'Bayar-qris',
+            //     version: QrVersions.auto,
+            //     size: 100.0,
+            //   ),
+            // ),
           ),
           const SpaceHeight(24.0),
           Countdown(

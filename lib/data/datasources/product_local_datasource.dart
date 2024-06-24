@@ -1,3 +1,4 @@
+import 'package:flutter_wisata_app/data/models/request/order_request_model.dart';
 import 'package:flutter_wisata_app/presentation/home/bloc/checkout/models/order_model.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -155,6 +156,33 @@ class ProductLocalDatasource {
     final result = await db.query('orders', orderBy: 'id DESC');
 
     return result.map((e) => OrderModel.fromLocalMap(e)).toList();
+  }
+
+  //get Order is sync false
+  Future<List<OrderModel>> getOrdersIsSyncFalse() async {
+    final db = await instance.database;
+    final result = await db.query('orders', where: 'is_sync = 0');
+
+    return result.map((e) => OrderModel.fromLocalMap(e)).toList();
+  }
+
+  //update order is sync
+  Future<void> updateOrderIsSync(int id) async {
+    final db = await instance.database;
+    await db.update(
+      'orders',
+      {'is_sync': 1},
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  //get order item by id order
+  Future<List<OrderItemModel>> getOrderItemsByIdOrder(int idOrder) async {
+    final db = await instance.database;
+    final result = await db.query('order_items', where: 'id_order = $idOrder');
+
+    return result.map((e) => OrderItemModel.fromMap(e)).toList();
   }
 
   // Insert Category
