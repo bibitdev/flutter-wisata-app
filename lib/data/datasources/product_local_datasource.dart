@@ -198,5 +198,15 @@ class ProductLocalDatasource {
   Future<void> removeAllCategory() async {
     final db = await instance.database;
     await db.delete(tableCategory);
-  } 
+  }
+
+  //verifyQrCode
+  Future<bool> verifyQrCode(String qrCode) async {
+    final realTranctionTime = qrCode.split('#').last;
+    final db = await instance.database;
+    final result = await db.query('orders',
+        where: "transaction_time = '$realTranctionTime'");
+
+    return result.isNotEmpty;
+  }
 }

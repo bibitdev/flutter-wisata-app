@@ -64,6 +64,10 @@ class $AssetsImagesGen {
   AssetGenImage get logoWhite =>
       const AssetGenImage('assets/images/logo_white.png');
 
+  /// File path: assets/images/not_valid.png
+  AssetGenImage get notValid =>
+      const AssetGenImage('assets/images/not_valid.png');
+
   /// File path: assets/images/qr_dana.png
   AssetGenImage get qrDana => const AssetGenImage('assets/images/qr_dana.png');
 
@@ -71,9 +75,20 @@ class $AssetsImagesGen {
   AssetGenImage get receiptCard =>
       const AssetGenImage('assets/images/receipt_card.png');
 
+  /// File path: assets/images/valid.png
+  AssetGenImage get valid => const AssetGenImage('assets/images/valid.png');
+
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [back, logoBlue, logoCwb, logoWhite, qrDana, receiptCard];
+  List<AssetGenImage> get values => [
+        back,
+        logoBlue,
+        logoCwb,
+        logoWhite,
+        notValid,
+        qrDana,
+        receiptCard,
+        valid
+      ];
 }
 
 class $AssetsIconsNavGen {

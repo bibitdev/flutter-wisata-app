@@ -29,7 +29,7 @@ class PaymentQrisDialog extends StatelessWidget {
               height: 200.0,
               width: 200.0,
               child: Container(
-                child: Image.asset('assets/images/qr_dana.png'),
+                child: Image.asset(Assets.images.qrDana.path),
               ),
             ),
             //   child: QrImageView(

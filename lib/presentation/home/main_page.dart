@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_wisata_app/presentation/home/bloc/product/product_bloc.dart';
 import 'package:flutter_wisata_app/presentation/home/pages/history_page.dart';
 import 'package:flutter_wisata_app/presentation/home/pages/order_page.dart';
+import 'package:flutter_wisata_app/presentation/home/pages/qr_scanner_page.dart';
 import 'package:flutter_wisata_app/presentation/home/pages/ticket_page.dart';
 import 'package:flutter_wisata_app/presentation/settings/pages/setting_page.dart';
 import 'widgets/nav_item.dart';
@@ -101,7 +102,11 @@ class _MainPageState extends State<MainPage> {
           ),
         ),
         floatingActionButton: GestureDetector(
-          onTap: () {},
+          onTap: () {
+            context.push(
+              QrScannerPage(),
+            );
+          },
           child: Container(
             padding: const EdgeInsets.all(12.0),
             decoration: const BoxDecoration(

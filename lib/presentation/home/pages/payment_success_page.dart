@@ -9,13 +9,18 @@ import 'package:flutter_wisata_app/presentation/home/bloc/checkout/models/order_
 
 import '../../../core/core.dart';
 
-class PaymentSuccessPage extends StatelessWidget {
+class PaymentSuccessPage extends StatefulWidget {
   final OrderModel order;
   const PaymentSuccessPage({
     Key? key,
     required this.order,
   }) : super(key: key);
 
+  @override
+  State<PaymentSuccessPage> createState() => _PaymentSuccessPageState();
+}
+
+class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,7 +70,9 @@ class PaymentSuccessPage extends StatelessWidget {
                   ),
                   const SpaceHeight(16.0),
                   QrImageView(
-                    data: 'payment-receipt',
+                    data: widget.order.cashierId.toString() +
+                        '#' +
+                        widget.order.transactionTime,
                     version: QrVersions.auto,
                   ),
                   const SpaceHeight(16.0),
@@ -75,15 +82,16 @@ class PaymentSuccessPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text('Tagihan'),
-                      Text(120000.currencyFormatRp),
+                      Text(widget.order.totalPrice.currencyFormatRp),
+                      // Text(120000.currencyFormatRp),
                     ],
                   ),
                   const SpaceHeight(40.0),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Metode Bayar'),
-                      Text('QRIS'),
+                      Text(widget.order.paymentMethod),
                     ],
                   ),
                   const SpaceHeight(8.0),
