@@ -3,7 +3,7 @@ import 'package:flutter_wisata_app/core/core.dart';
 import 'package:flutter_wisata_app/data/datasources/auth_local_datasource.dart';
 import 'package:flutter_wisata_app/presentation/home/main_page.dart';
 
-import '../../core/assets/assets.gen.dart';
+// import '../../core/assets/assets.gen.dart';
 import 'login_page.dart';
 
 class SplashPage extends StatefulWidget {
@@ -53,7 +53,6 @@ class _SplashPageState extends State<SplashPage> {
                       child: Align(
                         alignment: Alignment.center,
                         child: Text('WISATA PURWOKERTO'),
-                        // child: Assets.images.logoCwb.image(width: 96.0),
                       ),
                     ),
                   ],

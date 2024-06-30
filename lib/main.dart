@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        // Bloc digunakan untuk mengelola state yang terkait dengan proses pengguna
         BlocProvider(
           create: (context) => LoginBloc(AuthRemoteDatasource()),
         ),
@@ -58,7 +59,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'QuickTix',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
           dialogTheme: const DialogTheme(elevation: 0),

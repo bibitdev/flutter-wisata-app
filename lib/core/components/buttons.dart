@@ -17,7 +17,7 @@ class Button extends StatelessWidget {
     this.icon,
     this.suffixIcon,
     this.disabled = false,
-    this.fontSize = 18.0,
+    this.fontSize = 16.0,
   });
 
   const Button.outlined({

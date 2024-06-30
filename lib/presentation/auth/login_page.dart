@@ -46,6 +46,7 @@ class _LoginPageState extends State<LoginPage> {
                           controller: emailController,
                           label: 'Email',
                           isOutlineBorder: false,
+                          keyboardType: TextInputType.emailAddress,
                         ),
                         const SpaceHeight(36.0),
                         CustomTextField(
@@ -106,7 +107,6 @@ class _LoginPageState extends State<LoginPage> {
                         const SpaceHeight(128.0),
                         Center(
                           child: Text('WISATA PURWOKERTO'),
-                          // child: Assets.images.logoCwb.image(height: 40.0),
                         ),
                       ],
                     ),

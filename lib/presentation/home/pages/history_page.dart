@@ -21,7 +21,7 @@ class _HistoryPageState extends State<HistoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Transaction History'),
+        title: const Text('Riwayat Transaksi'),
       ),
       body: BlocBuilder<HistoryBloc, HistoryState>(
         builder: (context, state) {

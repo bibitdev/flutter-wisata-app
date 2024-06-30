@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_wisata_app/core/assets/assets.dart';
-import 'package:flutter_wisata_app/core/constants/constants.dart';
+import 'package:flutter_wisata_app/core/core.dart';
+import 'package:flutter_wisata_app/data/datasources/auth_local_datasource.dart';
 import 'package:flutter_wisata_app/data/datasources/product_local_datasource.dart';
+import 'package:flutter_wisata_app/presentation/auth/splash_page.dart';
 import 'package:flutter_wisata_app/presentation/home/bloc/category/category_bloc.dart';
 import 'package:flutter_wisata_app/presentation/home/bloc/product/product_bloc.dart';
 import 'package:flutter_wisata_app/presentation/home/bloc/sync_order/sync_order_bloc.dart';
@@ -38,7 +39,12 @@ class _SettingPageState extends State<SettingPage> {
             iconPath: Assets.icons.settings.logout.path,
             title: 'Logout',
             subtitle: 'Keluar dari aplikasi',
-            onPressed: () {},
+            onPressed: () async {
+            await AuthLocalDatasource().removeAuthData();
+            context.pushReplacement(
+              const SplashPage(),
+            );
+          },
           ),
           BlocConsumer<CategoryBloc, CategoryState>(
             listener: (context, state) {
