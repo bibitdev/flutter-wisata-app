@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_wisata_app/core/core.dart';
 import 'package:flutter_wisata_app/data/datasources/auth_local_datasource.dart';
 import 'package:flutter_wisata_app/presentation/home/main_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 // import '../../core/assets/assets.gen.dart';
 import 'login_page.dart';
@@ -52,7 +53,12 @@ class _SplashPageState extends State<SplashPage> {
                       height: 100.0,
                       child: Align(
                         alignment: Alignment.center,
-                        child: Text('WISATA PURWOKERTO'),
+                        child: Text('CURUG PINANG',
+                            style: GoogleFonts.poppins(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.primary,
+                            )),
                       ),
                     ),
                   ],

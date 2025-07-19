@@ -76,15 +76,15 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       onPressed: () => setState(() => paymentButtonIndex = 1),
                     ),
                   ),
-                  const SpaceWidth(20.0),
-                  Expanded(
-                    child: PaymentMethodButton(
-                      iconPath: Assets.icons.payment.transfer.path,
-                      label: 'Transfer',
-                      isActive: paymentButtonIndex == 2,
-                      onPressed: () => setState(() => paymentButtonIndex = 2),
-                    ),
-                  ),
+                  // const SpaceWidth(20.0),
+                  // Expanded(
+                  //   child: PaymentMethodButton(
+                  //     iconPath: Assets.icons.payment.transfer.path,
+                  //     label: 'Transfer',
+                  //     isActive: paymentButtonIndex == 2,
+                  //     onPressed: () => setState(() => paymentButtonIndex = 2),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -149,9 +149,13 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     child: Button.filled(
                       onPressed: () {
                         if (paymentButtonIndex == 0) {
+                          context.read<OrderBloc>().add(
+                              OrderEvent.addPaymentMethod('Qris', orderItems));
                           showDialog(
                             context: context,
-                            builder: (context) => const PaymentQrisDialog(),
+                            builder: (context) => PaymentQrisDialog(
+                              totalPrice: totalPrice,
+                            ),
                           );
                         } else if (paymentButtonIndex == 1) {
                           context.read<OrderBloc>().add(

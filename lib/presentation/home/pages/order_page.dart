@@ -86,13 +86,6 @@ class _OrderPageState extends State<OrderPage> {
                           ),
                         ),
                       );
-                      // return Text(
-                      //   40000.currencyFormatRp,
-                      //   style: const TextStyle(
-                      //     fontWeight: FontWeight.bold,
-                      //     fontSize: 16.0,
-                      //   ),
-                      // );
                     },
                   ),
                 ],

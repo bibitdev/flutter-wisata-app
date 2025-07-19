@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
         title: 'QuickTix',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
-          dialogTheme: const DialogTheme(elevation: 0),
+          dialogTheme: const DialogThemeData(elevation: 0),
           textTheme: GoogleFonts.outfitTextTheme(
             Theme.of(context).textTheme,
           ),

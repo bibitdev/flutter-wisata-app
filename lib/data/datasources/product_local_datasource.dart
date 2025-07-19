@@ -202,10 +202,27 @@ class ProductLocalDatasource {
 
   //verifyQrCode
   Future<bool> verifyQrCode(String qrCode) async {
-    final realTranctionTime = qrCode.split('#').last;
+    final parts = qrCode.split('#');
+    if (parts.length < 2) return false;
+
+    final transactionTimeStr = parts.last.trim();
+    final transactionTime = DateTime.tryParse(transactionTimeStr);
+    if (transactionTime == null) return false;
+
     final db = await instance.database;
-    final result = await db.query('orders',
-        where: "transaction_time = '$realTranctionTime'");
+
+    final lowerBound = transactionTime.subtract(const Duration(seconds: 10));
+    final upperBound = transactionTime.add(const Duration(seconds: 10));
+
+    // Biarkan format tetap ISO (dengan T dan milidetik)
+    final lowerBoundStr = lowerBound.toIso8601String();
+    final upperBoundStr = upperBound.toIso8601String();
+
+    final result = await db.query(
+      'orders',
+      where: 'transaction_time BETWEEN ? AND ?',
+      whereArgs: [lowerBoundStr, upperBoundStr],
+    );
 
     return result.isNotEmpty;
   }

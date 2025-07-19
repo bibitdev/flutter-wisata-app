@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_wisata_app/presentation/home/pages/history_page.dart';
-// import 'package:qr_flutter/qr_flutter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_wisata_app/data/datasources/product_local_datasource.dart';
+import 'package:flutter_wisata_app/presentation/home/bloc/checkout/models/order_model.dart';
+import 'package:flutter_wisata_app/presentation/home/bloc/order/order_bloc.dart';
+import 'package:flutter_wisata_app/presentation/home/pages/payment_success_page.dart';
 import 'package:timer_count_down/timer_count_down.dart';
 
 import '../../../core/core.dart';
 
+
 class PaymentQrisDialog extends StatelessWidget {
-  const PaymentQrisDialog({super.key});
+  final int totalPrice;
+
+  const PaymentQrisDialog({super.key, required this.totalPrice});
 
   @override
   Widget build(BuildContext context) {
@@ -14,40 +20,72 @@ class PaymentQrisDialog extends StatelessWidget {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text('Show this QR code to customer'),
+          const Text('Tunjukkan QR Code ini kepada pelanggan'),
           const SpaceHeight(24.0),
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => HistoryPage(),
-                ),
+
+          /// Qr & Simulasi klik
+          BlocListener<OrderBloc, OrderState>(
+            listener: (context, state) {
+              state.maybeWhen(
+                error: (message) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(message),
+                      backgroundColor: AppColors.error,
+                    ),
+                  );
+                },
+                success: (orders, totalQuantity, totalPrice, paymentNominal,
+                    paymentMethod, cashierId, cashierName) {
+                  final orderModel = OrderModel(
+                    paymentMethod: paymentMethod,
+                    nominalPayment: paymentNominal,
+                    orders: orders,
+                    totalQuantity: totalQuantity,
+                    totalPrice: totalPrice,
+                    cashierId: cashierId,
+                    cashierName: cashierName,
+                    isSync: false,
+                    transactionTime: DateTime.now().toIso8601String(),
+                  );
+                  ProductLocalDatasource.instance.insertOrder(orderModel);
+                  context.pushReplacement(PaymentSuccessPage(order: orderModel));
+                },
+                orElse: () {},
               );
             },
-            child: SizedBox(
-              height: 200.0,
-              width: 200.0,
-              child: Container(
-                child: Image.asset(Assets.images.qrDana.path),
+            child: InkWell(
+              onTap: () {
+                // Simulasi: Pembayaran QR berhasil
+                context
+                    .read<OrderBloc>()
+                    .add(OrderEvent.addNominalPayment(totalPrice));
+              },
+              child: SizedBox(
+                height: 200.0,
+                width: 200.0,
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppColors.primary, width: 2),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Image.asset(Assets.images.qrDana.path),
+                ),
               ),
             ),
-            //   child: QrImageView(
-            //     data: 'Bayar-qris',
-            //     version: QrVersions.auto,
-            //     size: 100.0,
-            //   ),
-            // ),
           ),
+
           const SpaceHeight(24.0),
+
+          /// Countdown
           Countdown(
             seconds: 60,
             build: (context, time) => Text.rich(
               TextSpan(
-                text: 'Update after ',
+                text: 'Update dalam ',
                 children: [
                   TextSpan(
-                    text: '${time.toInt()}s.',
+                    text: '${time.toInt()} detik',
                     style: const TextStyle(
                       color: AppColors.primary,
                       fontWeight: FontWeight.bold,

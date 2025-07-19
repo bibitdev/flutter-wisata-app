@@ -33,7 +33,21 @@ class _SettingPageState extends State<SettingPage> {
             iconPath: Assets.icons.settings.printer.path,
             title: 'Printer',
             subtitle: 'kelola printer',
-            onPressed: () {},
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Printer'),
+                  content: const Text('Fitur ini belum tersedia'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text('OK'),
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
           SettingButton(
             iconPath: Assets.icons.settings.logout.path,
