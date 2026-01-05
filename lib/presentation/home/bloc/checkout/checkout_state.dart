@@ -6,5 +6,4 @@ class CheckoutState with _$CheckoutState {
   const factory CheckoutState.loading() = _Loading;
   const factory CheckoutState.success(List<OrderItem> products) = _Success;
   const factory CheckoutState.error(String message) = _Error;
-
 }

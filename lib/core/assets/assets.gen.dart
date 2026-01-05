@@ -52,9 +52,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/back.png
   AssetGenImage get back => const AssetGenImage('assets/images/back.png');
 
-  /// File path: assets/images/logo_blue.png
+  /// File path: assets/images/logo_new.png
   AssetGenImage get logoBlue =>
-      const AssetGenImage('assets/images/logo_blue.png');
+      const AssetGenImage('assets/images/logo_new.png');
 
   /// File path: assets/images/logo_cwb.png
   AssetGenImage get logoCwb =>

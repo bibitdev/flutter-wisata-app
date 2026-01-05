@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_wisata_app/core/utils/auth_utils.dart';
 import 'package:flutter_wisata_app/data/models/response/product_response_model.dart';
 import 'package:flutter_wisata_app/presentation/home/bloc/product/product_bloc.dart';
 import 'package:flutter_wisata_app/presentation/home/widgets/ticket_card.dart';
@@ -15,11 +16,20 @@ class TicketPage extends StatefulWidget {
 }
 
 class _TicketPageState extends State<TicketPage> {
+  bool canManageTickets = false;
+
   @override
   void initState() {
     context.read<ProductBloc>().add(const ProductEvent.getProducts());
-
+    _checkUserPermissions();
     super.initState();
+  }
+
+  void _checkUserPermissions() async {
+    final canManage = await AuthUtils.canManageTickets();
+    setState(() {
+      canManageTickets = canManage;
+    });
   }
 
   @override
@@ -28,16 +38,19 @@ class _TicketPageState extends State<TicketPage> {
       appBar: AppBar(
         title: const Text('Kelola Tiket'),
         actions: [
-          IconButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) => const AddTicketDialog(),
-              );
-            },
-            icon: Assets.icons.plus.svg(),
-          ),
-          const SpaceWidth(8.0),
+          // Hanya tampilkan tombol + jika user adalah admin
+          if (canManageTickets) ...[
+            IconButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => const AddTicketDialog(),
+                );
+              },
+              icon: Assets.icons.plus.svg(),
+            ),
+            const SpaceWidth(8.0),
+          ]
         ],
       ),
       body: BlocBuilder<ProductBloc, ProductState>(
@@ -52,6 +65,7 @@ class _TicketPageState extends State<TicketPage> {
             separatorBuilder: (context, index) => const SpaceHeight(20.0),
             itemBuilder: (context, index) => TicketCard(
               item: products[index],
+              canManage: canManageTickets, // Pass permission ke TicketCard
             ),
           );
         },

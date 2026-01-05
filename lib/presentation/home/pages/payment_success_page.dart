@@ -65,6 +65,22 @@ class PaymentSuccessPage extends StatefulWidget {
 }
 
 class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
+  String? ticketId; // Variable untuk menyimpan ticket ID
+
+  @override
+  void initState() {
+    super.initState();
+    _generateTicketId();
+  }
+
+  void _generateTicketId() {
+    // Generate ticket ID berdasarkan format: TIK + tanggal + urutan
+    final now = DateTime.now();
+    final dateFormat = now.toIso8601String().substring(0, 10).replaceAll('-', '');
+    final randomNumber = (widget.order.id ?? 0).toString().padLeft(4, '0');
+    ticketId = 'TIK$dateFormat$randomNumber';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,65 +109,87 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
               color: AppColors.primary,
             ),
           ),
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: Assets.images.receiptCard.provider(),
-                alignment: Alignment.topCenter,
+          SingleChildScrollView(
+            child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: Assets.images.receiptCard.provider(),
+                  alignment: Alignment.topCenter,
+                ),
               ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(60.0),
-              child: Column(
-                children: [
-                  const Text(
-                    'PAYMENT RECIEPT',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 2.5,
+              child: Padding(
+                padding: const EdgeInsets.all(60.0),
+                child: Column(
+                  children: [
+                    const Text(
+                      'PAYMENT RECIEPT',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 2.5,
+                      ),
                     ),
-                  ),
-                  const SpaceHeight(16.0),
-                  QrImageView(
-                    data: widget.order.cashierId.toString() + '#' + widget.order.transactionTime,
-                    version: QrVersions.auto,
-                  ),
-                  const SpaceHeight(16.0),
-                  const Text('Scan this QR code to verify tickets'),
-                  const SpaceHeight(20.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text('Tagihan'),
-                      Text(widget.order.totalPrice.currencyFormatRp),
-                    ],
-                  ),
-                  const SpaceHeight(40.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text('Metode Bayar'),
-                      Text(widget.order.paymentMethod),
-                    ],
-                  ),
-                  const SpaceHeight(8.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text('Waktu'),
-                      Text(DateTime.now().toFormattedDate()),
-                    ],
-                  ),
-                  const SpaceHeight(8.0),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Status'),
-                      Text('Lunas'),
-                    ],
-                  ),
-                ],
+                    const SpaceHeight(16.0),
+                    QrImageView(
+                      data: widget.order.cashierId.toString() + '#' + widget.order.transactionTime,
+                      version: QrVersions.auto,
+                      size: 180.0,
+                    ),
+                    const SpaceHeight(8.0),
+                    // Menambahkan Ticket ID di bawah QR Code
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(8.0),
+                        border: Border.all(color: AppColors.primary.withOpacity(0.3)),
+                      ),
+                      child: Text(
+                        'ID Tiket: ${ticketId ?? 'Loading...'}',
+                        style: const TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ),
+                    const SpaceHeight(12.0),
+                    const Text('Scan this QR code to verify tickets'),
+                    const SpaceHeight(16.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Tagihan'),
+                        Text(widget.order.totalPrice.currencyFormatRp),
+                      ],
+                    ),
+                    const SpaceHeight(16.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Metode Bayar'),
+                        Text(widget.order.paymentMethod),
+                      ],
+                    ),
+                    const SpaceHeight(8.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Waktu'),
+                        Text(DateTime.now().toFormattedDate()),
+                      ],
+                    ),
+                    const SpaceHeight(8.0),
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Status'),
+                        Text('Lunas'),
+                      ],
+                    ),
+                    const SpaceHeight(80.0), // Extra space for the floating action button
+                  ],
+                ),
               ),
             ),
           ),
@@ -184,6 +222,10 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                 }
               }
 
+              print('=== DEBUG: Memulai proses cetak PDF ===');
+              print('Base URL: ${Variables.baseUrl}');
+              print('Ticket ID: $ticketId');
+              
               final response = await http.post(
                 Uri.parse('${Variables.baseUrl}/api/transactions/print'),
                 headers: {'Content-Type': 'application/json'},
@@ -193,41 +235,101 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                   'transaction_time': DateTime.now().toIso8601String(),
                   'email': 'bibitraikhanazzaki@gmail.com',
                   'cashier_id': widget.order.cashierId,
+                  'ticket_number': ticketId, // Diganti dari ticket_id menjadi ticket_number
                 }),
               );
 
+              print('Response Status Code: ${response.statusCode}');
+              print('Response Body: ${response.body}');
+
               if (response.statusCode == 200) {
                 final data = jsonDecode(response.body);
+                print('Data parsed: $data');
+                
+                if (data['pdf_url'] == null) {
+                  throw Exception('Server tidak mengembalikan URL PDF');
+                }
+                
                 final pdfUrl = data['pdf_url'];
+                print('PDF URL: $pdfUrl');
 
                 Directory? downloadDir;
                 if (Platform.isAndroid) {
                   downloadDir = Directory('/storage/emulated/0/Download');
+                  if (!await downloadDir.exists()) {
+                    await downloadDir.create(recursive: true);
+                  }
                 } else {
                   downloadDir = await getApplicationDocumentsDirectory();
                 }
 
                 final savePath = '${downloadDir.path}/Struk_Wisata_Baturaden.pdf';
+                print('Save Path: $savePath');
+                
                 await Dio().download(pdfUrl, savePath);
+                print('PDF berhasil diunduh');
 
                 await showNotification(savePath);
 
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('PDF disimpan di folder Download')),
-                );
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('✓ PDF berhasil disimpan di folder Download'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
 
-                context.read<CheckoutBloc>().add(const CheckoutEvent.started());
-                context.pushReplacement(const MainPage());
+                  context.read<CheckoutBloc>().add(const CheckoutEvent.started());
+                  context.pushReplacement(const MainPage());
+                }
               } else {
+                // Parse error message dari server
+                String errorMessage = 'Gagal membuat PDF';
+                try {
+                  final errorData = jsonDecode(response.body);
+                  errorMessage = errorData['message'] ?? errorMessage;
+                } catch (e) {
+                  errorMessage = 'Server error: ${response.statusCode}';
+                }
+                
+                print('ERROR: $errorMessage');
+                
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('✗ $errorMessage\nKode: ${response.statusCode}'),
+                      backgroundColor: Colors.red,
+                      duration: const Duration(seconds: 5),
+                    ),
+                  );
+                }
+              }
+            } catch (e, stackTrace) {
+              print('=== ERROR DETAIL ===');
+              print('Error: $e');
+              print('Stack Trace: $stackTrace');
+              
+              String userFriendlyMessage = 'Terjadi kesalahan: ';
+              
+              if (e.toString().contains('SocketException')) {
+                userFriendlyMessage += 'Tidak dapat terhubung ke server. Periksa koneksi internet Anda.';
+              } else if (e.toString().contains('TimeoutException')) {
+                userFriendlyMessage += 'Koneksi timeout. Server tidak merespons.';
+              } else if (e.toString().contains('FormatException')) {
+                userFriendlyMessage += 'Format data tidak valid dari server.';
+              } else {
+                userFriendlyMessage += e.toString();
+              }
+              
+              if (context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Gagal membuat PDF')),
+                  SnackBar(
+                    content: Text(userFriendlyMessage),
+                    backgroundColor: Colors.red,
+                    duration: const Duration(seconds: 5),
+                  ),
                 );
               }
-            } catch (e) {
-              print('Error: \$e');
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Terjadi error: \$e')),
-              );
             }
           },
           label: 'Cetak Transaksi',

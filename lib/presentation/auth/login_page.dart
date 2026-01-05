@@ -47,9 +47,9 @@ class _LoginPageState extends State<LoginPage> {
       body: Stack(
         children: [
           SizedBox(
-            height: 260.0,
+            height: 450.0,
             child: Center(
-              child: Assets.images.logoWhite.image(height: 55.0),
+              child: Assets.images.logoWhite.image(height: 700.0),
             ),
           ),
           Align(

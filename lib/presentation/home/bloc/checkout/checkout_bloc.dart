@@ -15,15 +15,32 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
         List<OrderItem> products = [...currentState.products];
         final index = products
             .indexWhere((element) => element.product.id == event.product.id);
+        
         if (index >= 0) {
-          products[index].quantity += 1;
+          // Cek stok sebelum menambah
+          if (products[index].quantity < event.product.stock!) {
+            products[index].quantity += 1;
+          } else {
+            // Tidak menambah jika stok tidak cukup, tapi tidak emit error
+            // Bisa tambahkan notifikasi di UI
+            return;
+          }
         } else {
-          products.add(OrderItem(product: event.product, quantity: 1));
+          // Cek stok untuk produk baru
+          if (event.product.stock! > 0) {
+            products.add(OrderItem(product: event.product, quantity: 1));
+          } else {
+            return; // Stok habis
+          }
         }
+        
         emit(const _Loading());
         emit(_Success(products));
       } else {
-        emit(_Success([OrderItem(product: event.product, quantity: 1)]));
+        // State awal, cek stok dulu
+        if (event.product.stock! > 0) {
+          emit(_Success([OrderItem(product: event.product, quantity: 1)]));
+        }
       }
     });
 

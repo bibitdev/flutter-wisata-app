@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'QuickTix',
+        title: 'Wisata',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
           dialogTheme: const DialogThemeData(elevation: 0),
