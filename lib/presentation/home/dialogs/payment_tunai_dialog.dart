@@ -5,6 +5,7 @@ import 'package:flutter_wisata_app/presentation/home/bloc/checkout/models/order_
 import 'package:flutter_wisata_app/presentation/home/bloc/order/order_bloc.dart';
 
 import '../../../core/core.dart';
+import '../../../core/utils/date_utils.dart';
 import '../pages/payment_success_page.dart';
 
 class PaymentTunaiDialog extends StatefulWidget {
@@ -125,6 +126,7 @@ class _PaymentTunaiDialogState extends State<PaymentTunaiDialog> {
                 orElse: () {},
                 success: (orders, totalQuantity, totalPrice, paymentNominal,
                     paymentMethod, cashierId, cashierName) {
+                  // ⏰ Gunakan waktu WIB agar konsisten dengan server Laravel
                   final orderModel = OrderModel(
                       paymentMethod: paymentMethod,
                       nominalPayment: paymentNominal,
@@ -134,7 +136,7 @@ class _PaymentTunaiDialogState extends State<PaymentTunaiDialog> {
                       cashierId: cashierId,
                       cashierName: cashierName,
                       isSync: false,
-                      transactionTime: DateTime.now().toIso8601String());
+                      transactionTime: AppDateUtils.transactionTimeNow());
                   ProductLocalDatasource.instance.insertOrder(orderModel);
                   context.pushReplacement( PaymentSuccessPage(order: orderModel,));
                 },

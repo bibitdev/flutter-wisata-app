@@ -110,7 +110,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Text('Order Summary'),
+                        const Text('mary'),
                         BlocBuilder<CheckoutBloc, CheckoutState>(
                           builder: (context, state) {
                             return state.maybeWhen(
@@ -149,8 +149,9 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     child: Button.filled(
                       onPressed: () {
                         if (paymentButtonIndex == 0) {
+                          // ⚠️ PENTING: Backend Laravel hanya menerima 'QRIS' atau 'Tunai' (case sensitive)
                           context.read<OrderBloc>().add(
-                              OrderEvent.addPaymentMethod('Qris', orderItems));
+                              OrderEvent.addPaymentMethod('QRIS', orderItems));
                           showDialog(
                             context: context,
                             builder: (context) => PaymentQrisDialog(
@@ -168,7 +169,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                           );
                         }
                       },
-                      label: 'Process',
+                      label: 'Proses',
                     ),
                   ),
                 ],

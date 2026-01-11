@@ -7,6 +7,7 @@ import 'package:flutter_wisata_app/presentation/home/pages/payment_success_page.
 import 'package:timer_count_down/timer_count_down.dart';
 
 import '../../../core/core.dart';
+import '../../../core/utils/date_utils.dart';
 
 
 class PaymentQrisDialog extends StatelessWidget {
@@ -37,6 +38,7 @@ class PaymentQrisDialog extends StatelessWidget {
                 },
                 success: (orders, totalQuantity, totalPrice, paymentNominal,
                     paymentMethod, cashierId, cashierName) {
+                  // ⏰ Gunakan waktu WIB agar konsisten dengan server Laravel
                   final orderModel = OrderModel(
                     paymentMethod: paymentMethod,
                     nominalPayment: paymentNominal,
@@ -46,7 +48,7 @@ class PaymentQrisDialog extends StatelessWidget {
                     cashierId: cashierId,
                     cashierName: cashierName,
                     isSync: false,
-                    transactionTime: DateTime.now().toIso8601String(),
+                    transactionTime: AppDateUtils.transactionTimeNow(),
                   );
                   ProductLocalDatasource.instance.insertOrder(orderModel);
                   context.pushReplacement(PaymentSuccessPage(order: orderModel));

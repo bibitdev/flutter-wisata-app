@@ -182,7 +182,11 @@ class ProductLocalDatasource {
     final db = await instance.database;
     final result = await db.query('order_items', where: 'id_order = $idOrder');
 
-    return result.map((e) => OrderItemModel.fromMap(e)).toList();
+    return result.map((e) => OrderItemModel.fromMap({
+      'product_id': e['id_product'],
+      'quantity': e['quantity'],
+      'total_price': e['price'], // ⚠️ Map 'price' dari DB ke 'total_price' untuk Laravel
+    })).toList();
   }
 
   // Insert Category

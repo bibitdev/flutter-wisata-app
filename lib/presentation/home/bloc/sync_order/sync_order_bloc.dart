@@ -5,7 +5,6 @@ import 'package:flutter_wisata_app/data/models/request/order_request_model.dart'
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'package:flutter_wisata_app/data/datasources/order_remote_datasource.dart';
-import 'package:intl/intl.dart';
 
 part 'sync_order_bloc.freezed.dart';
 part 'sync_order_event.dart';
@@ -23,8 +22,10 @@ class SyncOrderBloc extends Bloc<SyncOrderEvent, SyncOrderState> {
       for (final order in orderIsSyncFalse) {
         final orderItems = await ProductLocalDatasource.instance
             .getOrderItemsByIdOrder(order.id!);
-        final transactionTimeFormatted = DateFormat('yyyy-MM-dd HH:mm:ss')
-            .format(DateTime.parse(order.transactionTime));
+        
+        // ✅ Format ISO 8601 sesuai requirement Laravel backend
+        final transactionTimeFormatted = DateTime.parse(order.transactionTime)
+            .toIso8601String();
 
         final orderRequest = OrderRequestModel(
           cashierName: order.cashierName,
@@ -33,7 +34,7 @@ class SyncOrderBloc extends Bloc<SyncOrderEvent, SyncOrderState> {
           cashierId: order.cashierId,
           totalPrice: order.totalPrice,
           totalItem: order.totalQuantity,
-          paymentMethod: order.paymentMethod,
+          paymentMethod: order.paymentMethod, // ⚠️ Harus 'Tunai' atau 'QRIS'
           orderItems: orderItems,
         );
 

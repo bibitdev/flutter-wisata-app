@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_wisata_app/core/utils/date_utils.dart';
 import 'package:flutter_wisata_app/presentation/home/bloc/checkout/checkout_bloc.dart';
 import 'package:flutter_wisata_app/presentation/home/bloc/product/product_bloc.dart';
 import 'package:flutter_wisata_app/presentation/home/pages/order_detail_page.dart';
@@ -23,22 +24,56 @@ class _OrderPageState extends State<OrderPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Cek hari saat ini (weekend atau weekday)
+    final isWeekend = AppDateUtils.isWeekend();
+    final dayType = isWeekend ? 'Tiket Weekend' : 'Tiket Weekday';
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Penjualan Ticket'),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Penjualan Tiket'),
+            // Text(
+            //   dayType,
+            //   style: TextStyle(
+            //     fontSize: 12.0,
+            //     fontWeight: FontWeight.normal,
+            //     color: AppColors.grey,
+            //   ),
+            // ),
+          ],
+        ),
       ),
       body: BlocBuilder<ProductBloc, ProductState>(
         builder: (context, state) {
-          final products = state.maybeWhen(
+          final allProducts = state.maybeWhen(
             success: (products) => products,
             orElse: () => [],
           );
 
+          // Filter produk berdasarkan kategori weekend/weekday
+          final products = allProducts.where((product) {
+            final categoryName = product.category?.name?.toLowerCase() ?? '';
+
+            if (isWeekend) {
+              // Jika weekend, hanya tampilkan tiket weekend
+              return categoryName.contains('weekend');
+            } else {
+              // Jika weekday, hanya tampilkan tiket weekday
+              return categoryName.contains('weekday');
+            }
+          }).toList();
+
           if (products.isEmpty) {
-            return const Center(
-              child: Text('No Data'),
+            return Center(
+              child: Text(
+                'Tidak ada tiket ${isWeekend ? 'weekend' : 'weekday'} tersedia',
+                style: TextStyle(color: AppColors.grey),
+              ),
             );
           }
+
           return ListView.separated(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             itemCount: products.length,
@@ -59,7 +94,7 @@ class _OrderPageState extends State<OrderPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text('Order Summary'),
+                  const Text('Ringkasan Pesanan'),
                   BlocBuilder<CheckoutBloc, CheckoutState>(
                     builder: (context, state) {
                       return state.maybeWhen(
@@ -99,7 +134,7 @@ class _OrderPageState extends State<OrderPage> {
                 onPressed: () {
                   context.push(const OrderDetailPage());
                 },
-                label: 'Process',
+                label: 'Proses',
               ),
             ),
           ],

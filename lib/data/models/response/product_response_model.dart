@@ -160,7 +160,7 @@ class Product {
     String? status,
     String? criteria,
     int? favorite,
-    dynamic? deletedAt,
+    dynamic deletedAt,
     DateTime? createdAt,
     DateTime? updatedAt,
     Category? category,

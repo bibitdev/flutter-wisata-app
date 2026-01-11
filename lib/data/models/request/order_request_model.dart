@@ -30,7 +30,7 @@ class OrderRequestModel {
   factory OrderRequestModel.fromMap(Map<String, dynamic> json) =>
       OrderRequestModel(
         transactionTime: json["transaction_time"],
-        cashierId: json["total_price"],
+        cashierId: json["cashier_id"],
         totalPrice: json["total_price"],
         totalItem: json["total_item"],
         paymentMethod: json["payment_method"],
@@ -62,7 +62,7 @@ class OrderRequestModel {
 class OrderItemModel {
   final int? productId;
   final int? quantity;
-  final int? totalPrice;
+  final int? totalPrice; // ⚠️ PENTING: Ini adalah harga PER UNIT, bukan total!
 
   OrderItemModel({
     this.productId,
@@ -76,14 +76,14 @@ class OrderItemModel {
   String toJson() => json.encode(toMap());
 
   factory OrderItemModel.fromMap(Map<String, dynamic> json) => OrderItemModel(
-        productId: json["id_product"],
+        productId: json["product_id"],
         quantity: json["quantity"],
-        totalPrice: json["price"],
+        totalPrice: json["total_price"],
       );
 
   Map<String, dynamic> toMap() => {
         "product_id": productId,
         "quantity": quantity,
-        "total_price": totalPrice,
+        "total_price": totalPrice, // Backend akan kalkulasi: totalPrice * quantity
       };
 }

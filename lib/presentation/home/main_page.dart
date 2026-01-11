@@ -75,26 +75,26 @@ class _MainPageState extends State<MainPage> {
             children: [
               NavItem(
                 iconPath: Assets.icons.nav.home.path,
-                label: 'Home',
+                label: 'Beranda',
                 isActive: _selectedIndex == 0,
                 onTap: () => _onItemTapped(0),
               ),
               NavItem(
                 iconPath: Assets.icons.nav.ticket.path,
-                label: 'Ticket',
+                label: 'Tiket',
                 isActive: _selectedIndex == 1,
                 onTap: () => _onItemTapped(1),
               ),
               const SpaceWidth(10.0),
               NavItem(
                 iconPath: Assets.icons.nav.history.path,
-                label: 'History',
+                label: 'Riwayat',
                 isActive: _selectedIndex == 2,
                 onTap: () => _onItemTapped(2),
               ),
               NavItem(
                 iconPath: Assets.icons.nav.setting.path,
-                label: 'Setting',
+                label: 'Pengaturan',
                 isActive: _selectedIndex == 3,
                 onTap: () => _onItemTapped(3),
               ),
