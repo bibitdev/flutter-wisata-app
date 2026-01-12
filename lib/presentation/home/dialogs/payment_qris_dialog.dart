@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_wisata_app/data/datasources/product_local_datasource.dart';
 import 'package:flutter_wisata_app/presentation/home/bloc/checkout/models/order_model.dart';
 import 'package:flutter_wisata_app/presentation/home/bloc/order/order_bloc.dart';
+import 'package:flutter_wisata_app/presentation/home/bloc/sync_order/sync_order_bloc.dart';
 import 'package:flutter_wisata_app/presentation/home/pages/payment_success_page.dart';
 import 'package:timer_count_down/timer_count_down.dart';
 
@@ -51,6 +52,10 @@ class PaymentQrisDialog extends StatelessWidget {
                     transactionTime: AppDateUtils.transactionTimeNow(),
                   );
                   ProductLocalDatasource.instance.insertOrder(orderModel);
+                  
+                  // 🚀 Auto-sync transaksi ke server
+                  context.read<SyncOrderBloc>().add(const SyncOrderEvent.syncOrder());
+                  
                   context.pushReplacement(PaymentSuccessPage(order: orderModel));
                 },
                 orElse: () {},

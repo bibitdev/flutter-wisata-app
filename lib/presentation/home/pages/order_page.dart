@@ -26,7 +26,6 @@ class _OrderPageState extends State<OrderPage> {
   Widget build(BuildContext context) {
     // Cek hari saat ini (weekend atau weekday)
     final isWeekend = AppDateUtils.isWeekend();
-    final dayType = isWeekend ? 'Tiket Weekend' : 'Tiket Weekday';
 
     return Scaffold(
       appBar: AppBar(
@@ -52,34 +51,44 @@ class _OrderPageState extends State<OrderPage> {
             orElse: () => [],
           );
 
-          // Filter produk berdasarkan kategori weekend/weekday
+          // Filter produk berdasarkan nama produk (karena category null)
           final products = allProducts.where((product) {
-            final categoryName = product.category?.name?.toLowerCase() ?? '';
+            final productName = product.name?.toLowerCase() ?? '';
 
             if (isWeekend) {
-              // Jika weekend, hanya tampilkan tiket weekend
-              return categoryName.contains('weekend');
+              // Jika weekend, tampilkan "Tiket Hari Libur"
+              return productName.contains('hari libur') ||
+                  productName.contains('weekend');
             } else {
-              // Jika weekday, hanya tampilkan tiket weekday
-              return categoryName.contains('weekday');
+              // Jika weekday, tampilkan "Tiket Hari Kerja"
+              return productName.contains('hari kerja') ||
+                  productName.contains('weekday');
             }
           }).toList();
 
           if (products.isEmpty) {
             return Center(
               child: Text(
-                'Tidak ada tiket ${isWeekend ? 'weekend' : 'weekday'} tersedia',
+                'Tidak ada tiket ${isWeekend ? 'hari libur' : 'hari kerja'} tersedia',
                 style: TextStyle(color: AppColors.grey),
               ),
             );
           }
 
-          return ListView.separated(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            itemCount: products.length,
-            separatorBuilder: (context, index) => const SpaceHeight(20.0),
-            itemBuilder: (context, index) => OrderCard(
-              item: products[index],
+          return RefreshIndicator(
+            onRefresh: () async {
+              // Refresh data produk dari database/server
+              context.read<ProductBloc>().add(ProductEvent.getLocalProducts());
+              // Tambah delay kecil agar loading terlihat
+              await Future.delayed(const Duration(milliseconds: 500));
+            },
+            child: ListView.separated(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              itemCount: products.length,
+              separatorBuilder: (context, index) => const SpaceHeight(20.0),
+              itemBuilder: (context, index) => OrderCard(
+                item: products[index],
+              ),
             ),
           );
         },

@@ -7,6 +7,7 @@ import 'package:flutter_wisata_app/presentation/auth/splash_page.dart';
 import 'package:flutter_wisata_app/presentation/home/bloc/category/category_bloc.dart';
 import 'package:flutter_wisata_app/presentation/home/bloc/product/product_bloc.dart';
 import 'package:flutter_wisata_app/presentation/home/bloc/sync_order/sync_order_bloc.dart';
+import 'package:flutter_wisata_app/presentation/settings/pages/printer_setting_page.dart';
 import 'package:flutter_wisata_app/presentation/settings/widgets/setting_button.dart';
 
 class SettingPage extends StatefulWidget {
@@ -34,19 +35,7 @@ class _SettingPageState extends State<SettingPage> {
             title: 'Printer',
             subtitle: 'kelola printer',
             onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: const Text('Printer'),
-                  content: const Text('Fitur ini belum tersedia'),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('OK'),
-                    ),
-                  ],
-                ),
-              );
+              context.push(const PrinterSettingPage());
             },
           ),
           SettingButton(

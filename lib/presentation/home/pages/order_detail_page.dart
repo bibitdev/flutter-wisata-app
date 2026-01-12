@@ -110,7 +110,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Text('mary'),
+                        const Text('Total Pembayaran'),
                         BlocBuilder<CheckoutBloc, CheckoutState>(
                           builder: (context, state) {
                             return state.maybeWhen(

@@ -62,24 +62,30 @@ class Button extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(borderRadius),
                 ),
+                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  icon ?? const SizedBox.shrink(),
+                  if (icon != null) icon!,
                   if (icon != null && label.isNotEmpty)
-                    const SizedBox(width: 10.0),
-                  Text(
-                    label,
-                    style: TextStyle(
-                      color: textColor,
-                      fontSize: fontSize,
-                      fontWeight: FontWeight.w600,
+                    const SizedBox(width: 6.0),
+                  Flexible(
+                    child: Text(
+                      label,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: TextStyle(
+                        color: textColor,
+                        fontSize: fontSize,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                   if (suffixIcon != null && label.isNotEmpty)
-                    const SizedBox(width: 10.0),
-                  suffixIcon ?? const SizedBox.shrink(),
+                    const SizedBox(width: 6.0),
+                  if (suffixIcon != null) suffixIcon!,
                 ],
               ),
             )
@@ -91,24 +97,30 @@ class Button extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(borderRadius),
                 ),
+                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  icon ?? const SizedBox.shrink(),
+                  if (icon != null) icon!,
                   if (icon != null && label.isNotEmpty)
-                    const SizedBox(width: 10.0),
-                  Text(
-                    label,
-                    style: TextStyle(
-                      color: textColor,
-                      fontSize: fontSize,
-                      fontWeight: FontWeight.w600,
+                    const SizedBox(width: 6.0),
+                  Flexible(
+                    child: Text(
+                      label,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: TextStyle(
+                        color: textColor,
+                        fontSize: fontSize,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                   if (suffixIcon != null && label.isNotEmpty)
-                    const SizedBox(width: 10.0),
-                  suffixIcon ?? const SizedBox.shrink(),
+                    const SizedBox(width: 6.0),
+                  if (suffixIcon != null) suffixIcon!,
                 ],
               ),
             ),

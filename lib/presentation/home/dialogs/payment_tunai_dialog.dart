@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_wisata_app/data/datasources/product_local_datasource.dart';
 import 'package:flutter_wisata_app/presentation/home/bloc/checkout/models/order_model.dart';
 import 'package:flutter_wisata_app/presentation/home/bloc/order/order_bloc.dart';
+import 'package:flutter_wisata_app/presentation/home/bloc/sync_order/sync_order_bloc.dart';
 
 import '../../../core/core.dart';
 import '../../../core/utils/date_utils.dart';
@@ -50,7 +51,7 @@ class _PaymentTunaiDialogState extends State<PaymentTunaiDialog> {
                 child: Button.outlined(
                   label: 'Uang Pas',
                   borderRadius: 10.0,
-                  fontSize: 12.0,
+                  fontSize: 10.0,
                   onPressed: () => setState(() {
                     paidIndex = 0;
                     nominalController.text = widget.totalPrice.currencyFormatRp;
@@ -60,12 +61,12 @@ class _PaymentTunaiDialogState extends State<PaymentTunaiDialog> {
                       paidIndex == 0 ? AppColors.primary : Colors.transparent,
                 ),
               ),
-              const SpaceWidth(10.0),
+              const SpaceWidth(6.0),
               Flexible(
                 child: Button.outlined(
                   label: 200000.currencyFormatRp,
                   borderRadius: 10.0,
-                  fontSize: 12.0,
+                  fontSize: 10.0,
                   onPressed: () => setState(() {
                     paidIndex = 1;
                     nominalController.text = 200000.currencyFormatRp;
@@ -77,14 +78,14 @@ class _PaymentTunaiDialogState extends State<PaymentTunaiDialog> {
               ),
             ],
           ),
-          const SpaceHeight(20.0),
+          const SpaceHeight(10.0),
           Row(
             children: [
               Flexible(
                 child: Button.outlined(
                   label: 150000.currencyFormatRp,
                   borderRadius: 10.0,
-                  fontSize: 12.0,
+                  fontSize: 10.0,
                   onPressed: () => setState(() {
                     paidIndex = 2;
                     nominalController.text = 150000.currencyFormatRp;
@@ -94,12 +95,12 @@ class _PaymentTunaiDialogState extends State<PaymentTunaiDialog> {
                       paidIndex == 2 ? AppColors.primary : Colors.transparent,
                 ),
               ),
-              const SpaceWidth(20.0),
+              const SpaceWidth(6.0),
               Flexible(
                 child: Button.outlined(
                   label: 300000.currencyFormatRp,
                   borderRadius: 10.0,
-                  fontSize: 12.0,
+                  fontSize: 10.0,
                   onPressed: () => setState(() {
                     paidIndex = 3;
                     nominalController.text = 300000.currencyFormatRp;
@@ -138,6 +139,10 @@ class _PaymentTunaiDialogState extends State<PaymentTunaiDialog> {
                       isSync: false,
                       transactionTime: AppDateUtils.transactionTimeNow());
                   ProductLocalDatasource.instance.insertOrder(orderModel);
+                  
+                  // 🚀 Auto-sync transaksi ke server
+                  context.read<SyncOrderBloc>().add(const SyncOrderEvent.syncOrder());
+                  
                   context.pushReplacement( PaymentSuccessPage(order: orderModel,));
                 },
               );

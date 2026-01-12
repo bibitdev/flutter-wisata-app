@@ -117,9 +117,112 @@ class _LoginPageState extends State<LoginPage> {
                               state.maybeWhen(
                                 orElse: () {},
                                 success: (data) async {
+                                  // 🔒 STEP 1: Simpan auth data dulu
                                   await AuthLocalDatasource()
                                       .saveAuthData(data);
-                                  context.pushReplacement(const MainPage());
+
+                                  // 🔒 STEP 2: CEK ROLE USER
+                                  final userRole = data.user?.role ?? 'user';
+
+                                  // 🚫 STEP 3: BLOKIR ADMIN
+                                  if (userRole == 'admin') {
+                                    // Clear auth data
+                                    await AuthLocalDatasource()
+                                        .removeAuthData();
+
+                                    // Tampilkan dialog error
+                                    if (context.mounted) {
+                                      showDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        builder: (context) => AlertDialog(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(16),
+                                          ),
+                                          title: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.block,
+                                                color: Colors.red[700],
+                                                size: 28,
+                                              ),
+                                              const SizedBox(width: 12),
+                                              const Text(
+                                                'Akses Ditolak',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          content: const Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Akun Administrator tidak dapat mengakses aplikasi kasir mobile.',
+                                                style: TextStyle(
+                                                  fontSize: 15,
+                                                  height: 1.5,
+                                                ),
+                                              ),
+                                              SizedBox(height: 12),
+                                              Text(
+                                                'Silakan gunakan dashboard web untuk mengelola data dan sistem.',
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.grey,
+                                                  height: 1.5,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.of(context).pop(),
+                                              style: TextButton.styleFrom(
+                                                foregroundColor:
+                                                    AppColors.primary,
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  horizontal: 24,
+                                                  vertical: 12,
+                                                ),
+                                              ),
+                                              child: const Text(
+                                                'Mengerti',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 15,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }
+                                    return;
+                                  }
+
+                                  // ✅ STEP 4: IZINKAN STAFF
+                                  if (userRole == 'staff') {
+                                    if (context.mounted) {
+                                      context.pushReplacement(const MainPage());
+                                    }
+                                  } else {
+                                    // Role tidak dikenal
+                                    await AuthLocalDatasource()
+                                        .removeAuthData();
+                                    if (context.mounted) {
+                                      _showErrorDialog(
+                                        'Role pengguna tidak valid. Hubungi administrator.',
+                                      );
+                                    }
+                                  }
                                 },
                                 error: (_) {
                                   _showErrorDialog(

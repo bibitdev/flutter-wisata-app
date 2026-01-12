@@ -1,25 +1,22 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_wisata_app/presentation/home/bloc/checkout/checkout_bloc.dart';
-import 'package:flutter_wisata_app/presentation/home/main_page.dart';
-import 'package:http/http.dart' as http;
-import 'package:qr_flutter/qr_flutter.dart';
-import 'package:dio/dio.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:flutter_wisata_app/presentation/home/bloc/checkout/models/order_model.dart';
 import 'package:flutter_wisata_app/core/constants/variables.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_wisata_app/core/core.dart';
+import 'package:flutter_wisata_app/core/utils/print_helper.dart';
+import 'package:flutter_wisata_app/data/datasources/auth_local_datasource.dart';
+import 'package:flutter_wisata_app/presentation/home/bloc/checkout/models/order_model.dart';
+import 'package:http/http.dart' as http;
 import 'package:open_filex/open_filex.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
 Future<void> setupNotifications() async {
-  const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+  const AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('@mipmap/ic_launcher');
   final InitializationSettings initializationSettings = InitializationSettings(
     android: initializationSettingsAndroid,
   );
@@ -35,7 +32,8 @@ Future<void> setupNotifications() async {
 }
 
 Future<void> showNotification(String filePath) async {
-  const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
+  const AndroidNotificationDetails androidPlatformChannelSpecifics =
+      AndroidNotificationDetails(
     'download_channel',
     'Download Notifications',
     channelDescription: 'Notifikasi saat file berhasil diunduh',
@@ -43,7 +41,8 @@ Future<void> showNotification(String filePath) async {
     priority: Priority.high,
     playSound: true,
   );
-  const NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
+  const NotificationDetails platformChannelSpecifics =
+      NotificationDetails(android: androidPlatformChannelSpecifics);
   await flutterLocalNotificationsPlugin.show(
     0,
     'Download selesai',
@@ -76,7 +75,8 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
   void _generateTicketId() {
     // Generate ticket ID berdasarkan format: TIK + tanggal + urutan
     final now = DateTime.now();
-    final dateFormat = now.toIso8601String().substring(0, 10).replaceAll('-', '');
+    final dateFormat =
+        now.toIso8601String().substring(0, 10).replaceAll('-', '');
     final randomNumber = (widget.order.id ?? 0).toString().padLeft(4, '0');
     ticketId = 'TIK$dateFormat$randomNumber';
   }
@@ -87,7 +87,7 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
       appBar: AppBar(
         backgroundColor: AppColors.primary,
         title: const Text(
-          'Payment Reciept',
+          'Bukti Pembayaran',
           style: TextStyle(color: AppColors.white),
         ),
         leading: GestureDetector(
@@ -122,7 +122,7 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                 child: Column(
                   children: [
                     const Text(
-                      'PAYMENT RECIEPT',
+                      'BUKTI PEMBAYARAN',
                       style: TextStyle(
                         fontSize: 18.0,
                         fontWeight: FontWeight.bold,
@@ -131,18 +131,22 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                     ),
                     const SpaceHeight(16.0),
                     QrImageView(
-                      data: widget.order.cashierId.toString() + '#' + widget.order.transactionTime,
+                      data: widget.order.cashierId.toString() +
+                          '#' +
+                          widget.order.transactionTime,
                       version: QrVersions.auto,
                       size: 180.0,
                     ),
                     const SpaceHeight(8.0),
                     // Menambahkan Ticket ID di bawah QR Code
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12.0, vertical: 6.0),
                       decoration: BoxDecoration(
                         color: AppColors.primary.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(8.0),
-                        border: Border.all(color: AppColors.primary.withOpacity(0.3)),
+                        border: Border.all(
+                            color: AppColors.primary.withOpacity(0.3)),
                       ),
                       child: Text(
                         'ID Tiket: ${ticketId ?? 'Loading...'}',
@@ -154,7 +158,7 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                       ),
                     ),
                     const SpaceHeight(12.0),
-                    const Text('Scan this QR code to verify tickets'),
+                    // const Text('Scan this QR code to verify tickets'),
                     const SpaceHeight(16.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -187,7 +191,8 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                         Text('Lunas'),
                       ],
                     ),
-                    const SpaceHeight(80.0), // Extra space for the floating action button
+                    const SpaceHeight(
+                        80.0), // Extra space for the floating action button
                   ],
                 ),
               ),
@@ -198,8 +203,15 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Padding(
         padding: const EdgeInsets.fromLTRB(36, 0, 36, 20),
-        child: Button.filled(
-          onPressed: () async {
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Button Print Thermal (Thermer)
+            _ThermalPrintButton(order: widget.order, ticketId: ticketId),
+            // const SpaceHeight(12.0),
+            // Button Cetak PDF (di-comment karena sudah ada Cetak Struk Thermal)
+            /* Button.outlined(
+                onPressed: () async {
             try {
               await setupNotifications();
 
@@ -332,10 +344,160 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
               }
             }
           },
-          label: 'Cetak Transaksi',
+          label: 'Cetak PDF',
           borderRadius: 10.0,
+        ), */
+          ],
         ),
       ),
+    );
+  }
+}
+
+// Separate stateful widget for thermal print button
+class _ThermalPrintButton extends StatefulWidget {
+  final OrderModel order;
+  final String? ticketId;
+
+  const _ThermalPrintButton({
+    required this.order,
+    required this.ticketId,
+  });
+
+  @override
+  State<_ThermalPrintButton> createState() => _ThermalPrintButtonState();
+}
+
+class _ThermalPrintButtonState extends State<_ThermalPrintButton> {
+  bool isProcessing = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Button.filled(
+      disabled: isProcessing,
+      onPressed: () async {
+        setState(() => isProcessing = true);
+
+        try {
+          // 🚀 STEP 1: Get auth token dulu
+          print('=== THERMAL PRINT: Mengirim data ke server ===');
+          final authData = await AuthLocalDatasource().getAuthData();
+          final token = authData.token;
+          print('Token: ${token?.substring(0, 20)}...');
+
+          final response = await http.post(
+            Uri.parse('${Variables.baseUrl}/api/transactions/print'),
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'Authorization': 'Bearer $token', // ✅ TAMBAHKAN TOKEN!
+            },
+            body: jsonEncode({
+              'amount': widget.order.totalPrice,
+              'payment_method': widget.order.paymentMethod,
+              'transaction_time': DateTime.now().toIso8601String(),
+              'email': 'bibitraikhanazzaki@gmail.com',
+              'cashier_id': widget.order.cashierId,
+              'ticket_number': widget.ticketId,
+            }),
+          );
+
+          print('Response Status: ${response.statusCode}');
+
+          if (response.statusCode != 200) {
+            throw Exception(
+                'Gagal mengirim data ke server: ${response.statusCode}');
+          }
+
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('✓ Data berhasil tersimpan ke database'),
+                backgroundColor: Colors.blue,
+                duration: Duration(seconds: 2),
+              ),
+            );
+          }
+
+          // Small delay untuk user melihat notifikasi
+          await Future.delayed(const Duration(milliseconds: 500));
+
+          // 🚀 STEP 2: Print ke Thermer
+          print('=== THERMAL PRINT: Mengirim ke Thermer ===');
+
+          final items = widget.order.orders
+              .map((item) => {
+                    'name': item.product.name,
+                    'quantity': item.quantity,
+                    'price': item.product.price,
+                  })
+              .toList();
+
+          final result = await PrintHelper.printReceipt(
+            cashierName: widget.order.cashierName,
+            transactionTime: widget.order.transactionTime,
+            items: items,
+            totalPrice: widget.order.totalPrice,
+            paymentMethod: widget.order.paymentMethod,
+            nominalPayment: widget.order.nominalPayment,
+            transactionId: widget.order.id,
+            ticketId: widget.ticketId,
+            cashierId: widget.order.cashierId,
+          );
+
+          if (context.mounted) {
+            if (result) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('✓ Struk berhasil dikirim ke Thermer'),
+                  backgroundColor: Colors.green,
+                ),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('⚠ Pastikan aplikasi Thermer terinstall'),
+                  backgroundColor: Colors.orange,
+                ),
+              );
+            }
+          }
+        } catch (e) {
+          print('ERROR: $e');
+          if (context.mounted) {
+            String errorMsg = 'Gagal mengirim data ke server';
+            if (e.toString().contains('SocketException')) {
+              errorMsg = 'Tidak ada koneksi internet';
+            } else if (e.toString().contains('TimeoutException')) {
+              errorMsg = 'Server tidak merespons';
+            }
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('✗ $errorMsg'),
+                backgroundColor: Colors.red,
+                duration: const Duration(seconds: 3),
+              ),
+            );
+          }
+        } finally {
+          if (mounted) {
+            setState(() => isProcessing = false);
+          }
+        }
+      },
+      label: isProcessing ? 'Mengirim ke server...' : 'Cetak Struk Thermal',
+      borderRadius: 10.0,
+      icon: isProcessing
+          ? const SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: Colors.white,
+              ),
+            )
+          : const Icon(Icons.print, color: Colors.white),
     );
   }
 }

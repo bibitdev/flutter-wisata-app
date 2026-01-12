@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata_app/core/core.dart';
 import 'package:flutter_wisata_app/data/datasources/auth_local_datasource.dart';
+import 'package:flutter_wisata_app/data/datasources/auth_helper.dart';
 import 'package:flutter_wisata_app/presentation/home/main_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -15,21 +16,47 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  Future<Widget> _checkAuthAndRole() async {
+    // Wait 2 seconds for splash screen
+    await Future.delayed(const Duration(seconds: 2));
+
+    // Check if logged in
+    final isLoggedIn = await AuthLocalDatasource().isLogin();
+
+    if (!isLoggedIn) {
+      return const LoginPage();
+    }
+
+    // 🔒 Check user role
+    final userRole = await AuthHelper.getUserRole();
+    print('=== SPLASH CHECK ===');
+    print('User logged in: $isLoggedIn');
+    print('User role: $userRole');
+
+    // 🚫 Block admin from accessing app
+    if (userRole == 'admin') {
+      await AuthHelper.forceLogout();
+      return const LoginPage();
+    }
+
+    // ✅ Allow staff to access
+    if (userRole == 'staff') {
+      return const MainPage();
+    }
+
+    // Unknown role - force logout
+    await AuthHelper.forceLogout();
+    return const LoginPage();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder(
-          future: Future.delayed(
-            const Duration(seconds: 2),
-            () => AuthLocalDatasource().isLogin(),
-          ),
+      body: FutureBuilder<Widget>(
+          future: _checkAuthAndRole(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.data == true) {
-                return const MainPage();
-              } else {
-                return const LoginPage();
-              }
+              return snapshot.data ?? const LoginPage();
             }
             return Stack(
               children: [

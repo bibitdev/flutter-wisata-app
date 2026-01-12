@@ -25,11 +25,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       response.fold(
         (error) {
-          print('Login failed: $error');
           emit(_Error(error));
         },
         (data) {
-          print('Login success: $data');
           emit(_Success(data));
         },
       );
